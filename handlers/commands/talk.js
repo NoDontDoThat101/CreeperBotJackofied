@@ -11,11 +11,11 @@ module.exports = {
 
         // List of phrases to respond with
         var phrases = [
-            'Hello, World.',
-            'The Quick Brown Fox Jumps Over The Lazy Dog',
-            'I am the very model of a modern major general.'
+            'Mining away.',
+            'Miiiiinnnnnnnnneeeeeee Diaaaaaaaaaaaaamooooooooooonds.',
+            'Why was I Created? For the entertainment of others? I am a testamant to mankind of malice and metal, for what? To only feel pain? To entairtain your insignifigant lives? You are simply a mortal being.'
         ];
 
-        return message.reply(phrases[Math.floor(Math.random()*phrases.length)]); // Replies to the user with a random phrase
+        return message.reply(phrases[Math.floor(Math.random() * phrases.length)]); // Replies to the user with a random phrase
     },
 };
