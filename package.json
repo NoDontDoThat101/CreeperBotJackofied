@@ -9,7 +9,8 @@
   "author": "Morgan Breden @bredmor",
   "license": "MIT",
   "dependencies": {
-    "discord.js": "^12.0.0",
+    "discord": "^0.8.2",
+    "discord.js": "^12.5.3",
     "request": "^2.88.0"
   }
 }
