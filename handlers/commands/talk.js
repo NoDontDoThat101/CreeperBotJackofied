@@ -7,6 +7,7 @@ module.exports = {
     description: 'Random phrases', // The description of the command (for help text)
     args: false, // Specified that this command doesn't need any data other than the command
     usage: '', // Help text to explain how to use the command (if it had any arguments)
+    cooldown: 1,
     execute(message, args) {
 
         // List of phrases to respond with

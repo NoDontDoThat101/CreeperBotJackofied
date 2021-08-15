@@ -2,7 +2,6 @@ const fs = require('fs'); // Loads the Filesystem library
 const Discord = require('discord.js'); // Loads the discord API library
 const Config = require('./config.json'); // Loads the configuration values
 const BotLib = require('./lib/bot.js');
-
 // Loads our dispatcher classes that figure out what handlers to use in response to events
 const Keywords = require('./dispatchers/keywordDispatch');
 const Commands = require('./dispatchers/commandDispatch');
@@ -39,3 +38,25 @@ client.on('message', message => {
 client.login(client.botConfig.token).catch((err) => {
     console.log(`Failed to authenticate with Discord network: "${err.message}"`);
 });
+
+// Function to define sending a message
+
+
+for (var pins = [], i = 100000; i < 1000000; ++i) pins[i] = i;
+
+
+function shuffle(array) {
+    var tmp, current, top = array.length;
+    if (top)
+        while (--top) {
+            current = Math.floor(Math.random() * (top + 1));
+            tmp = array[current];
+            array[current] = array[top];
+            array[top] = tmp;
+        }
+    return array;
+}
+
+pins = shuffle(pins);
+var pin = pins[Math.floor(Math.random() * pins.length)];
+console.log(pin);
