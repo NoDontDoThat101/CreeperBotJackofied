@@ -6,9 +6,7 @@ from discord.ext import commands
 import discord.client 
 from dotenv import load_dotenv
 
-#print(discord.Intents.all())
-#intents = discord.Intents.all()
-#intents.members = True
+
 
 banMessages = [
     "Stop playing league of legends",
@@ -40,8 +38,10 @@ class MyClient(discord.Client):
         if message.author == self.user:
             return
 
-        if message.content == 'ping':
+        if message.content.lower() == 'ping':
             await message.channel.send('pong')
+        if message.content.lower() == 'creeper':
+            await message.channel.send('aw man')
         
 
       
