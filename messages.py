@@ -1,3 +1,4 @@
+import random
 banMessages = [
     "Stop playing league of legends",
     "Take a shower",
@@ -16,7 +17,8 @@ status = [
     'You',
     "Gay Furry Porn",
     "@Whistle's Steam Library",
-    "How To Psycologically Torture Your Friends: Part 1",
+    "How To Psycologically Torture Your Friends: Part " + random.randint(1,100),
+    
     
     
 ]
