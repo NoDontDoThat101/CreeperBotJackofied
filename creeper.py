@@ -62,5 +62,5 @@ t = os.getenv('DISCORD_TOKEN')
 
 client = MyClient()
 
-client.run(t, bot=True)# No work :()
+client.run(t, bot=True)
 
