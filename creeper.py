@@ -9,11 +9,20 @@ import messages as m
 
 selfDeprication = False
 
+
 client = commands.Bot(command_prefix='!')
 class MyClient(discord.Client):
     async def on_ready(self):
         print('Logged on as', self.user)
-        await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=random.choice(m.status)))
+        presence = random.randint(1,2)
+        if presence == 1:
+            #Chooses from watching List
+            await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=random.choice(m.watching)))
+        if presence == 2:
+            #Chooses from playing List
+            await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=random.choice(m.playing)))
+        '''if presence == 3:
+            await client.change_presence(activity=discord.Activity(type=discord.ActivityType.custom, details=random.choice(m.custom)))'''
     async def on_message(self, message):
         # don't respond to ourselves
         if message.author == self.user:
@@ -21,6 +30,7 @@ class MyClient(discord.Client):
         
         if message.content.lower() == 'ping':
             await message.channel.send('pong')
+            
         if message.content.lower() == 'creeper':
             if (random.randint(1, 1000) != 999) or selfDeprication == True:
                 await message.channel.send('aw man')
