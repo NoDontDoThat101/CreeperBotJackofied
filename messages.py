@@ -12,8 +12,11 @@ games = [
 ]
 
 status = [
-    "gaming",
-    "Just chilling",
-    "Having a good time",
-    "Banning LOL players",
+    "Your Status",
+    'You',
+    "Gay Furry Porn",
+    "@Whistle's Steam Library",
+    "How To Psycologically Torture Your Friends: Part 1",
+    
+    
 ]
