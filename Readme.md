@@ -1,5 +1,9 @@
-## Discord Bot
-Automatically Bans any member who plays any games in the games list
-Responds to creeper
-Up to suprisinbgly professional Standards
-Reports banned players to a list
+## Features
+No longer bans players for playing bad games.  
+Now follows main user around to monitor voice levels.  
+Does not allow users to change bot owner's nick name.  
+Editable messages in messages.py.  
+
+## ToDo
+Code comments.  
+Willpower.  
