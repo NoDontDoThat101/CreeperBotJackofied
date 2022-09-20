@@ -37,7 +37,7 @@ class MyClient(discord.Client):
     
     '''   def mute(id):
        await '''
-   
+
     async def on_ready(self):
         print('Logged on as', self.user)
         presence = random.randint(1,2)
@@ -56,20 +56,28 @@ class MyClient(discord.Client):
             return
         if not before.channel and after.channel and member.id == voidID:
             print('Void joined vc')
-            await member.voice.channel.connect()
-            print('Joined', after.channel.name)
+            try:    
+                await member.voice.channel.connect()
+                print('Joined', after.channel.name)
+            except:
+                print('Could not connect to vc. Is the bot already in a VC? Does the bot have premissions?')
         elif member.id == voidID and after.channel == None:
             print ('void left vc')
             server = member.guild.voice_client
-            await server.disconnect()
-            print('Left', before.channel.name)
+            try:
+                await server.disconnect()
+                print('Left', before.channel.name)
+            except:
+                print('Could not leave, Is the bot in a VC?')
         elif member.id == voidID:
             print ('void switched to', after.channel.name)
             id = member.voice.channel
             server = member.guild.voice_client
-            await server.move_to(id)
-            print('Switched to', after.channel.name)
-    
+            try:
+                await server.move_to(id)
+                print('Switched to', after.channel.name)
+            except:
+                print('Could not switch channels, does the bot have permission. Is the bot in a VC?')
             
     async def on_message(self, message):
         # don't respond to ourselves
@@ -134,6 +142,7 @@ class MyClient(discord.Client):
                 print(f'jackie changed her username: {before.name} was changed to {after.name}')
             elif before.nick != after.nick:
                 print(f'jackie\'s nickname: {before.nick} was changed to {after.nick}')
+                
         if after.id == voidID:
             if after.nick != None:
                 if after.nick != voidNick:
