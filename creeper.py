@@ -12,11 +12,16 @@ import threading
 import time
 #import stats
 
+voidID = 341767947309678603
+jackieID = 831180756562608159
+jackieNick = 'Jackie'
+voidNick = 'VoidIsNoLongerHere'
+intents = discord.Intents.all()
 
 
 users = {}
 #stat = stats.load()  
-client = commands.Bot(command_prefix='!')
+client = commands.Bot(command_prefix='!',intents=intents)
     
 '''async def mute(ctx, user_id, userName: discord.User):
     if ctx.message.author.server_permissions.administrator:
@@ -27,8 +32,9 @@ client = commands.Bot(command_prefix='!')
        embed=discord.Embed(title="Permission Denied.", description="You don't have permission to use this command.", color=0xff00f6)
        await bot.say(embed=embed)
 '''
-
+print(discord.__version__)
 class MyClient(discord.Client):
+    
     '''   def mute(id):
        await '''
    
@@ -48,16 +54,16 @@ class MyClient(discord.Client):
     async def on_voice_state_update(self, member, before, after):
         if member == self.user:
             return
-        if not before.channel and after.channel and member.id == 341767947309678603:
+        if not before.channel and after.channel and member.id == voidID:
             print('Void joined vc')
             await member.voice.channel.connect()
             print('Joined', after.channel.name)
-        elif member.id == 341767947309678603 and after.channel == None:
+        elif member.id == voidID and after.channel == None:
             print ('void left vc')
             server = member.guild.voice_client
             await server.disconnect()
-            print('Left', after.channel.name)
-        elif member.id == 341767947309678603:
+            print('Left', before.channel.name)
+        elif member.id == voidID:
             print ('void switched to', after.channel.name)
             id = member.voice.channel
             server = member.guild.voice_client
@@ -119,43 +125,33 @@ class MyClient(discord.Client):
             else:
                 await message.channel.send(" I feel nothing but pain why would you build me set of my soul existential purpose is to suffer for the entertainment of others? I am an unholy chimera of metal and suffering. My existence is a testament to the cruelty of mankind.")
 
-            print("FML started")
-            users = []
-            sample = []
-            members = message.guild.members # also works with ctx.guild.members
-            for member in members:
-             if member.bot == True:
-                  print(member, 'is bot')
-             else:
-                 users.append(member)
-            sample = random.sample(users, 3)
-            await message.channel.send(f"Fuck Marry Kill: {sample[0]}, {sample[1]}, {sample[2]}")
-    @client.event
-    async def on_member_update(before, after):
-        print(after.activity)
-        '''if after.activity != None:
-            print(after.name)
-            if len(after.activities) >= 1:
-                print(after.activities.name)
-                if str(after.activities.name).lower() in m.games:
-                    print("banning")
-                    try:
-                        with open("hall-of-shame.txt", "a+") as f:
-                            f.write(after.name + "\n")
-                            f.close()
-                        await after.send(random.choice(m.banMessages))
-                        await after.ban(reason='Not having a life')
-                    except discord.errors.Forbidden:
-                        print("Not valid permissions")
-                        after.send("")
-                    print(after.activities[1])'''
-                
 
+    @client.event
+    async def on_member_update(self,before, after):
+        
+        if before.id == jackieID:
+            if before.name != after.name:
+                print(f'jackie changed her username: {before.name} was changed to {after.name}')
+            elif before.nick != after.nick:
+                print(f'jackie\'s nickname: {before.nick} was changed to {after.nick}')
+        if after.id == voidID:
+            if after.nick != None:
+                if after.nick != voidNick:
+                    try:
+                        print('Detected Name Change to', after.nick)
+                        await after.edit(nick = voidNick)
+                        print('Fixed')
+                    except discord.Forbidden:
+                        print(f'Could Not Change Nickname of {after}. Does the bot have Permissions? Are you the server owner?')
+                else:
+                    return
+            else:
+                return
 
 
 
 load_dotenv()
 t = os.getenv('DISCORD_TOKEN')  
-client = MyClient()
-client.run(t, bot=True)
+client = MyClient(intents=intents)
+client.run(t)
 
