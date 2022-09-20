@@ -43,14 +43,34 @@ class MyClient(discord.Client):
             await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=random.choice(m.playing)))
         '''if presence == 3:
             await client.change_presence(activity=discord.Activity(type=discord.ActivityType.custom, details=random.choice(m.custom)))'''
-        
+    
+    @client.event
+    async def on_voice_state_update(self, member, before, after):
+        if member == self.user:
+            return
+        if not before.channel and after.channel and member.id == 341767947309678603:
+            print('Void joined vc')
+            await member.voice.channel.connect()
+            print('Joined', after.channel.name)
+        elif member.id == 341767947309678603 and after.channel == None:
+            print ('void left vc')
+            server = member.guild.voice_client
+            await server.disconnect()
+            print('Left', after.channel.name)
+        elif member.id == 341767947309678603:
+            print ('void switched to', after.channel.name)
+            id = member.voice.channel
+            server = member.guild.voice_client
+            await server.move_to(id)
+            print('Switched to', after.channel.name)
+    
             
     async def on_message(self, message):
         # don't respond to ourselves
         if message.author == self.user:
             return
         
-#        if message.content.lower() == "join":
+        if message.content.lower() == "join":
             await message.channel.send(message.author.voice.channel)
             await message.author.voice.channel.connect()
             print('Joined!')
@@ -66,6 +86,7 @@ class MyClient(discord.Client):
             server = message.guild.voice_client
             await server.disconnect()
             print('Left!')
+        
         
         if isinstance(message.channel,discord.DMChannel): #If you want this to work in a group channel, you could also check for discord.GroupChannel
             if message.content.lower() == 'stop':
@@ -97,7 +118,7 @@ class MyClient(discord.Client):
               #  print("Aw Man replied, Event started by", user, stat[user]-1)
             else:
                 await message.channel.send(" I feel nothing but pain why would you build me set of my soul existential purpose is to suffer for the entertainment of others? I am an unholy chimera of metal and suffering. My existence is a testament to the cruelty of mankind.")
-        if message.content.lower == 'fml':
+
             print("FML started")
             users = []
             sample = []
@@ -109,25 +130,25 @@ class MyClient(discord.Client):
                  users.append(member)
             sample = random.sample(users, 3)
             await message.channel.send(f"Fuck Marry Kill: {sample[0]}, {sample[1]}, {sample[2]}")
-'''@client.event
-async def on_member_update(before, after):
-    print(after.activity)
-    if after.activity != None:
-        print(after.name)
-        if len(after.activities) >= 1:
-            print(after.activities.name)
-            if str(after.activities.name).lower() in m.games:
-                print("banning")
-                try:
-                    with open("hall-of-shame.txt", "a+") as f:
-                        f.write(after.name + "\n")
-                        f.close()
-                    await after.send(random.choice(m.banMessages))
-                    await after.ban(reason='Not having a life')
-                except discord.errors.Forbidden:
-                    print("Not valid permissions")
-                    after.send("")
-                print(after.activities[1])'''
+    @client.event
+    async def on_member_update(before, after):
+        print(after.activity)
+        '''if after.activity != None:
+            print(after.name)
+            if len(after.activities) >= 1:
+                print(after.activities.name)
+                if str(after.activities.name).lower() in m.games:
+                    print("banning")
+                    try:
+                        with open("hall-of-shame.txt", "a+") as f:
+                            f.write(after.name + "\n")
+                            f.close()
+                        await after.send(random.choice(m.banMessages))
+                        await after.ban(reason='Not having a life')
+                    except discord.errors.Forbidden:
+                        print("Not valid permissions")
+                        after.send("")
+                    print(after.activities[1])'''
                 
 
 
