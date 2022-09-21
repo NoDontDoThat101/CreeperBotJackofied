@@ -2,6 +2,7 @@ from ast import Global
 from email import message
 import os 
 import random
+import re
 import discord
 from discord.ext import commands
 import discord.client 
@@ -13,16 +14,17 @@ import time
 #import stats
 
 voidID = 341767947309678603
+voidMention = '**<@341767947309678603>**'
 jackieID = 831180756562608159
 jackieNick = 'Jackie'
 voidNick = 'VoidIsNoLongerHere'
 intents = discord.Intents.all()
-
-
+voiduser = discord.Client.get_user
+print(voiduser)
 users = {}
 #stat = stats.load()  
 client = commands.Bot(command_prefix='!',intents=intents)
-    
+ 
 '''async def mute(ctx, user_id, userName: discord.User):
     if ctx.message.author.server_permissions.administrator:
         user = ctx.message.author
@@ -81,8 +83,17 @@ class MyClient(discord.Client):
             
     async def on_message(self, message):
         # don't respond to ourselves
+        
         if message.author == self.user:
             return
+        if message.author.id == 716945964782583829:
+            num = re.compile(r"\*\*<@[0-9]+>\*\*", re.IGNORECASE)
+            num = num.match(message.embeds[0].to_dict()['description']).group(0)
+            if voidMention == num:
+                await message.delete()
+            
+        if message.content == "Suzuka bite <@341767947309678603>":
+            await message.delete()
         
         if message.content.lower() == "join":
             await message.channel.send(message.author.voice.channel)
