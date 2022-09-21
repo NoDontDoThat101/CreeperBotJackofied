@@ -19,11 +19,10 @@ jackieID = 831180756562608159
 jackieNick = 'Jackie'
 voidNick = 'VoidIsNoLongerHere'
 intents = discord.Intents.all()
-voiduser = discord.Client.get_user
 keywords = ['Suzuka', '<@341767947309678603>']
 
 
-print(voiduser)
+
 users = {}
 #stat = stats.load()  
 client = commands.Bot(command_prefix='!',intents=intents)
@@ -89,8 +88,10 @@ class MyClient(discord.Client):
         
         if message.author == self.user:
             return
+        #Detects if suzuka sends a message
         if message.author.id == 716945964782583829:
             m = message.embeds[0].to_dict()['description']
+            #Detects if message contains Voids UID in both ifs
             if ('**<@341767947309678603>**,') in m.split():
                 print(f'Deleted the message \'{m}\'')
                 await message.delete()
@@ -98,12 +99,13 @@ class MyClient(discord.Client):
                 print(f'Deleted the message \'{m}\'')
                 await message.delete()
 
-
+        # Detects if someone is telling Suzuka to do something
         if 'Suzuka' in message.content.split():
+            #Detects if voids user id is mentioned and deletes the message
             if '<@341767947309678603>' in message.content.split():
                 print(f'Deleted the message {message.content}')
                 await message.delete()
-        
+        #To Join Voice Client
         if message.content.lower() == "join":
             await message.channel.send(message.author.voice.channel)
             await message.author.voice.channel.connect()
@@ -115,7 +117,7 @@ class MyClient(discord.Client):
             muted = True
             user = await message.guild.fetch_member(id)
             asyncio.loop.run_forever()'''
-            
+        #To Leave Voice Client    
         if message.content.lower() == "leave":
             server = message.guild.voice_client
             await server.disconnect()
@@ -135,16 +137,17 @@ class MyClient(discord.Client):
             if message.content.lower() == "p":
                 cid = int(input("Channel Id?: "))
                 await client.get_channel(cid).send(str(input("Message?: ")))
-                
+        #Test command       
         if message.content.lower() == 'ping':
             await message.channel.send('pong')
+            
         if message.content.lower() == 'creeper':
             if (random.randint(1, 1000) != 999):
-               #  user = message.author.name + '#' +message.author.discriminator
+               #Random chance creeper
                 uid = message.author.id
                 mention = f'<@{uid}>'
                 await message.channel.send(f'aw man {mention}')
-                
+              # Commented out because broken:   
               #  if uid in stat:
               #      stat[uid] += 1
               #  else:
@@ -156,21 +159,25 @@ class MyClient(discord.Client):
 
     @client.event
     async def on_member_update(self,before, after):
-        
+        #Gets user id from before
         if before.id == jackieID:
             if before.name != after.name:
                 print(f'jackie changed her username: {before.name} was changed to {after.name}')
             elif before.nick != after.nick:
                 print(f'jackie\'s nickname: {before.nick} was changed to {after.nick}')
-                
+        #Gets user id from before 
         if after.id == voidID:
+            #Makes sure nickname is actually changed
             if after.nick != None:
+                #Does not try to change if nickname is set properly
                 if after.nick != voidNick:
                     try:
+                        #In event nickname is changed it does this
                         print('Detected Name Change to', after.nick)
                         await after.edit(nick = voidNick)
                         print('Fixed')
                     except discord.Forbidden:
+                        #If unable raises an forbidden error
                         print(f'Could Not Change Nickname of {after}. Does the bot have Permissions? Are you the server owner?')
                 else:
                     return
@@ -178,9 +185,11 @@ class MyClient(discord.Client):
                 return
 
 
-
+#Get Token from env variable
 load_dotenv()
-t = os.getenv('DISCORD_TOKEN')  
+t = os.getenv('DISCORD_TOKEN') 
+ 
+#Start Bot
 client = MyClient(intents=intents)
 client.run(t)
 
