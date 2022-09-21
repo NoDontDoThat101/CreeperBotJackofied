@@ -20,6 +20,9 @@ jackieNick = 'Jackie'
 voidNick = 'VoidIsNoLongerHere'
 intents = discord.Intents.all()
 voiduser = discord.Client.get_user
+keywords = ['Suzuka', '<@341767947309678603>']
+
+
 print(voiduser)
 users = {}
 #stat = stats.load()  
@@ -87,13 +90,19 @@ class MyClient(discord.Client):
         if message.author == self.user:
             return
         if message.author.id == 716945964782583829:
-            num = re.compile(r"\*\*<@[0-9]+>\*\*", re.IGNORECASE)
-            num = num.match(message.embeds[0].to_dict()['description']).group(0)
-            if voidMention == num:
+            m = message.embeds[0].to_dict()['description']
+            if ('**<@341767947309678603>**,') in m.split():
+                print(f'Deleted the message \'{m}\'')
                 await message.delete()
-            
-        if message.content == "Suzuka bite <@341767947309678603>":
-            await message.delete()
+            elif '<@341767947309678603>,' in m.split():
+                print(f'Deleted the message \'{m}\'')
+                await message.delete()
+
+
+        if 'Suzuka' in message.content.split():
+            if '<@341767947309678603>' in message.content.split():
+                print(f'Deleted the message {message.content}')
+                await message.delete()
         
         if message.content.lower() == "join":
             await message.channel.send(message.author.voice.channel)

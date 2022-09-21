@@ -16,7 +16,6 @@ games = [
 ]
 
 playing = [
-    "Banning LOL Players",
     "Sex with Stalin",
     "Furry Hentai 2",
     "Anything that isnt LOL",
