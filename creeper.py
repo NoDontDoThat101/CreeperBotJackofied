@@ -54,34 +54,34 @@ class MyClient(discord.Client):
         '''if presence == 3:
             await client.change_presence(activity=discord.Activity(type=discord.ActivityType.custom, details=random.choice(m.custom)))'''
     
-    @client.event
-    async def on_voice_state_update(self, member, before, after):
-        if member == self.user:
-            return
-        if not before.channel and after.channel and member.id == voidID:
-            print('Void joined vc')
-            try:    
-                await member.voice.channel.connect()
-                print('Joined', after.channel.name)
-            except:
-                print('Could not connect to vc. Is the bot already in a VC? Does the bot have premissions?')
-        elif member.id == voidID and after.channel == None:
-            print ('void left vc')
-            server = member.guild.voice_client
-            try:
-                await server.disconnect()
-                print('Left', before.channel.name)
-            except:
-                print('Could not leave, Is the bot in a VC?')
-        elif member.id == voidID:
-            print ('void switched to', after.channel.name)
-            id = member.voice.channel
-            server = member.guild.voice_client
-            try:
-                await server.move_to(id)
-                print('Switched to', after.channel.name)
-            except:
-                print('Could not switch channels, does the bot have permission. Is the bot in a VC?')
+    ''' @client.event
+        async def on_voice_state_update(self, member, before, after):
+            if member == self.user:
+                return
+            if not before.channel and after.channel and member.id == voidID:
+                print('Void joined vc')
+                try:    
+                    await member.voice.channel.connect()
+                    print('Joined', after.channel.name)
+                except:
+                    print('Could not connect to vc. Is the bot already in a VC? Does the bot have premissions?')
+            elif member.id == voidID and after.channel == None:
+                print ('void left vc')
+                server = member.guild.voice_client
+                try:
+                    await server.disconnect()
+                    print('Left', before.channel.name)
+                except:
+                    print('Could not leave, Is the bot in a VC?')
+            elif member.id == voidID:
+                print ('void switched to', after.channel.name)
+                id = member.voice.channel
+                server = member.guild.voice_client
+                try:
+                    await server.move_to(id)
+                    print('Switched to', after.channel.name)
+                except:
+                    print('Could not switch channels, does the bot have permission. Is the bot in a VC?')'''
             
     async def on_message(self, message):
         # don't respond to ourselves
@@ -100,6 +100,11 @@ class MyClient(discord.Client):
                 await message.delete()
 
         # Detects if someone is telling Suzuka to do something
+        if message.content.startswith(')'):
+            #Detects if voids user id is mentioned and deletes the message
+            if '<@341767947309678603>' in message.content.split():
+                print(f'Deleted the message {message.content}')
+                await message.delete()
         if 'Suzuka' in message.content.split():
             #Detects if voids user id is mentioned and deletes the message
             if '<@341767947309678603>' in message.content.split():
