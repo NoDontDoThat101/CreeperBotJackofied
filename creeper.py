@@ -158,7 +158,7 @@ async def on_message(bot, message):
             #To send a custom message
         if message.content.lower() == "p":
             cid = int(input("Channel Id?: "))
-            await client.get_channel(cid).send(str(input("Message?: ")))
+            await bot.get_channel(cid).send(str(input("Message?: ")))
     #Test command       
     if message.content.lower() == 'ping':
         await message.channel.send('pong')
