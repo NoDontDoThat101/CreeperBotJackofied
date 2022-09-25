@@ -14,11 +14,11 @@ import threading
 import time
 #import stats
 
-
+#Get Token from env variable
 load_dotenv()
 token = os.getenv('DISCORD_TOKEN') 
 
-
+#Get All Sus Variable From .env
 voidID = int(os.getenv('VOID_ID'))
 voidMention = f'**<@{voidID}>**,'
 jackieID = int(os.getenv('JACKIE_ID'))
@@ -211,7 +211,7 @@ class MyClient(discord.Client):
                 return
 
 
-#Get Token from env variable
+
 
  
 #Start Bot
