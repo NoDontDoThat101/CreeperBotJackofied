@@ -25,7 +25,7 @@ jackieID = int(os.getenv('JACKIE_ID'))
 jackieNick = str(os.getenv('JACKIE_NICK'))
 voidNick = str(os.getenv('VOID_NICK'))
 intents = discord.Intents.all()
-keywords = ['Suzuka', '<@{voidID}>']
+keywords = ['Suzuka', f'<@{voidID}>']
 
 
 users = {}
@@ -85,10 +85,10 @@ class MyClient(discord.Client):
         if message.author.id == 716945964782583829:
             m = message.embeds[0].to_dict()['description']
             #Detects if message contains Voids UID in both ifs
-            if ('**<@341767947309678603>**,') in m.split():
+            if (f'**<@{voidID}>**,') in m.split():
                 print(f'Deleted the message \'{m}\'')
                 await message.delete()
-            elif '<@341767947309678603>,' in m.split():
+            elif f'<@{voidID}>,' in m.split():
                 print(f'Deleted the message \'{m}\'')
                 await message.delete()
         if message.author.id == voidID:
@@ -129,13 +129,13 @@ class MyClient(discord.Client):
         # Detects if someone is telling Suzuka to do something
         if message.content.startswith(')'):
             #Detects if voids user id is mentioned and deletes the message
-            if '<@341767947309678603>' in message.content.split():
-                print(f'Deleted the message {message.content}')
+            if f'<@{voidID}>' in message.content.split():
+                print(f'Deleted the message \'{message.content}\'')
                 await message.delete()
         if 'Suzuka' in message.content.split():
             #Detects if voids user id is mentioned and deletes the message
-            if '<@341767947309678603>' in message.content.split():
-                print(f'Deleted the message {message.content}')
+            if f'<@{voidID}>' in message.content.split():
+                print(f'Deleted the message \'{message.content}\'')
                 await message.delete()
         #To Join Voice Client
         if message.content.lower() == "join":
