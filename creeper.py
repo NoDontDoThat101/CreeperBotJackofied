@@ -170,7 +170,6 @@ class MyClient(discord.Client):
                         #In event nickname is changed it does this
                         print('Detected Name Change to', after.nick)
                         await after.edit(nick = voidNick)
-                        logging.Logger.info('Changed Nickname For', after)
                         print('Fixed')
                     except discord.Forbidden:
                         #If unable raises an forbidden error

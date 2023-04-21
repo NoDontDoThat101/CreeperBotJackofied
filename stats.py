@@ -2,7 +2,7 @@ from pathlib import Path
 from os import path
 import pickle
 import pdb
-import logging
+
 f = None
 def updateStat(uid, value=1):
     if type(uid) != str:
@@ -28,7 +28,7 @@ def save(data, close=False):
     with open('D:\Python Scripts\CreeperBot\data.pickle', "wb") as f:
         pickle.dump(data, f)
         f.close()
-        logging.Logger.info("Saved data")
+
         
 def load():
     if not path.exists('D:\Python Scripts\CreeperBot\data.pickle'):
@@ -43,5 +43,5 @@ def load():
         print ("No data found, returning empty dict")
         return {}
     f.close()
-    logging.Logger.info("Loaded data")
+
     return d
