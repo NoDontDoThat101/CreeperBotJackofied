@@ -6,6 +6,10 @@ import discord.client
 from dotenv import load_dotenv
 import messages as m
 import stats
+import logging
+
+#Start Logging
+handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 
 
 #Get Token from env variable
@@ -166,6 +170,7 @@ class MyClient(discord.Client):
                         #In event nickname is changed it does this
                         print('Detected Name Change to', after.nick)
                         await after.edit(nick = voidNick)
+                        logging.Logger.info('Changed Nickname For', after)
                         print('Fixed')
                     except discord.Forbidden:
                         #If unable raises an forbidden error
@@ -178,4 +183,4 @@ class MyClient(discord.Client):
  
 #Start Bot
 client = MyClient(intents=intents)
-client.run(token)
+client.run(token, log_handler=handler, log_level=logging.INFO)
