@@ -26,7 +26,6 @@ intents = discord.Intents.all()
 keywords = ['Suzuka', f'<@{voidID}>']
 client = commands.Bot(command_prefix='!',intents=intents)
 stat = stats.load()
-print(stat)
 class MyClient(discord.Client):
     
 
