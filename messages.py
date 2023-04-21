@@ -35,7 +35,6 @@ watching = [
     "Your Status",
     'You',
     "Gay Furry Porn",
-    "@Whistle's Steam Library",
     "How To Psycologically Torture Your Friends: Part " + str(random.randint(1,100000)),
     
     

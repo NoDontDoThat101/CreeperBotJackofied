@@ -11,10 +11,11 @@ import messages as m
 import asyncio
 import threading
 import time
+import stats
 
 #Get Token from env variable
 load_dotenv()
-token = os.getenv('DISCORD_TOKEN') 
+token = os.getenv('TOKEN') 
 
 #Get All Sus Variable From .env
 voidID = int(os.getenv('VOID_ID'))
@@ -24,9 +25,12 @@ jackieNick = str(os.getenv('JACKIE_NICK'))
 voidNick = str(os.getenv('VOID_NICK'))
 intents = discord.Intents.all()
 keywords = ['Suzuka', f'<@{voidID}>']
-
-#stat = stats.load()  
+stat = stats.load()  
 client = commands.Bot(command_prefix='!',intents=intents)
+
+def save_and_quit(data):
+    stats.save(data)
+    quit()
 class MyClient(discord.Client):
     
 
@@ -45,6 +49,8 @@ class MyClient(discord.Client):
     async def on_message(self, message):
         # don't respond to ourselves
         if message.author == self.user:
+            return
+        if 'vent' in message.channel.name.lower():
             return
         #Detects if suzuka sends a message
         if message.author.id == 716945964782583829:
@@ -89,7 +95,7 @@ class MyClient(discord.Client):
                 #print(f'Moved {role.name} to top')
                 print(roles)
                 await message.delete()
-                    
+                   
 
         # Detects if someone is telling Suzuka to do something
         if message.content.startswith(')'):
@@ -132,21 +138,22 @@ class MyClient(discord.Client):
         if message.content.lower() == 'ping':
             await message.channel.send('pong')
             
-        if message.content.lower() == 'creeper':
+        if 'creeper' in message.content.lower():
             if (random.randint(1, 1000) != 999):
                #Random chance creeper
                 uid = message.author.id
                 mention = f'<@{uid}>'
                 await message.channel.send(f'aw man {mention}')
-              # Commented out because broken:   
-              #  if uid in stat:
-              #      stat[uid] += 1
-              #  else:
-              #      stat[uid] = 1
-              #  print("Aw Man replied, Event started by", user, stat[user]-1)
-            else:
-                await message.channel.send("I feel nothing but pain, why would you build me set of my soul existential purpose is to suffer for the entertainment of others? I am an unholy chimera of metal and suffering. My existence is a testament to the cruelty of mankind.")
 
+                if uid in stat:
+                    stat[uid] += 1
+                else:
+                    stat[uid] = 1
+                    
+                print("Replied to", message.author.name, f"They've done this {stat[uid]} times")
+            else:
+                await message.channel.send("I feel nothing but pain, why would you build me? My soul existential purpose is to suffer for the entertainment of others? I am an unholy chimera of metal and suffering. My existence is a testament to the cruelty of mankind.")
+        stats.save(stat)
 
     @client.event
     async def on_member_update(self,before, after):

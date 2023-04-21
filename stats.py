@@ -1,29 +1,23 @@
-import re
+from pathlib import Path
+import pickle
 f = None       
 data = {
     'defualt':1,
     'save':2,  
     'balls':3  
-
-
 }
-directory = 'stats.txt'
-def save(data, dir):
-    f = open(dir, 'w')
-    for each in data:
-        f.write(f"{each}:{data[each]}" + '\n')  
 
+def save(data, close=False):
+        path = Path(__file__).parent
+        with path.open("data.pickle", "wb") as f:
+            pickle.dump(data, f)
+            f.close()
 
-def load(dir):
-    dictionary = {}
-    f = open(dir, "r")
-    reKey = re.compile(r"[a-zA-Z]+#[0-9]+", re.IGNORECASE)
-    reValue = re.compile(r"[0-9]+$", re.IGNORECASE)
-    for each in f.readlines():
-        key = reKey.search(each)
-        value =reValue.search(each)
-        dictionary[key.group()] = int(value.group())
-    return dictionary
+def load():
+    path = Path(__file__).parent
+    with path.open("data.pickle", "rb") as f:
+        d = pickle.load(f)
+        f.close()
+        return d
 
-
-load(directory)
+save(data)
