@@ -142,10 +142,10 @@ class MyClient(discord.Client):
         if 'creeper' in message.content.lower():
             if (random.randint(1, 1000) != 999):
                #Random chance creeper
-                uid = message.author.id
+                uid = str(message.author.id)
                 mention = f'<@{uid}>'
                 await message.channel.send(f'aw man {mention}')
-                stat[uid] = stats.updateStat(uid)
+                stat[uid] = stats.updateStat(uid, 1)
                 print("Replied to", message.author.name, f"They've done this {stat[uid]} times")
             else:
                 await message.channel.send("I feel nothing but pain, why would you build me? My soul existential purpose is to suffer for the entertainment of others? I am an unholy chimera of metal and suffering. My existence is a testament to the cruelty of mankind.")
