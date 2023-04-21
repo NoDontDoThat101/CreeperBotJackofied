@@ -6,7 +6,7 @@ import discord.client
 from dotenv import load_dotenv
 import messages as m
 import stats
-import pdb
+
 
 #Get Token from env variable
 load_dotenv()
@@ -174,3 +174,4 @@ class MyClient(discord.Client):
  
 #Start Bot
 client = MyClient(intents=intents)
+client.run(token)
