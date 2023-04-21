@@ -189,4 +189,3 @@ class MyClient(discord.Client):
 #Start Bot
 client = MyClient(intents=intents)
 client.run(token)
-
