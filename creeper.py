@@ -1,17 +1,12 @@
-from ast import Global
-from email import message
 import os 
 import random
-import re
 import discord
 from discord.ext import commands
 import discord.client 
 from dotenv import load_dotenv
 import messages as m
-import asyncio
-import threading
-import time
 import stats
+import pdb
 
 #Get Token from env variable
 load_dotenv()
@@ -25,12 +20,9 @@ jackieNick = str(os.getenv('JACKIE_NICK'))
 voidNick = str(os.getenv('VOID_NICK'))
 intents = discord.Intents.all()
 keywords = ['Suzuka', f'<@{voidID}>']
-stat = stats.load()  
 client = commands.Bot(command_prefix='!',intents=intents)
-
-def save_and_quit(data):
-    stats.save(data)
-    quit()
+stat = stats.load()
+print(stat)
 class MyClient(discord.Client):
     
 
@@ -145,15 +137,12 @@ class MyClient(discord.Client):
                 mention = f'<@{uid}>'
                 await message.channel.send(f'aw man {mention}')
 
-                if uid in stat:
-                    stat[uid] += 1
-                else:
-                    stat[uid] = 1
-                    
+                stat[uid] = stats.updateStat(uid)
+                
                 print("Replied to", message.author.name, f"They've done this {stat[uid]} times")
             else:
                 await message.channel.send("I feel nothing but pain, why would you build me? My soul existential purpose is to suffer for the entertainment of others? I am an unholy chimera of metal and suffering. My existence is a testament to the cruelty of mankind.")
-        stats.save(stat)
+
 
     @client.event
     async def on_member_update(self,before, after):
@@ -182,10 +171,6 @@ class MyClient(discord.Client):
             else:
                 return
 
-
-
-
  
 #Start Bot
 client = MyClient(intents=intents)
-client.run(token)
