@@ -20,7 +20,10 @@ def updateStat(uid, value=1):
         d = {uid: value}
         save(d)
         return d[uid]
-    d[uid] = d[uid] + value
+    if uid in d:
+        d[uid] = d[uid] + value
+    else:
+        d[uid] = value
     save(d)
     return d[uid]
 

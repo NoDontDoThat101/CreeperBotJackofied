@@ -134,10 +134,12 @@ class MyClient(discord.Client):
             await message.channel.send('pong')
         
         if message.content.lower() == '!stats':
-            if stat[str(message.author.id)] <= 500:
+            if (stat[str(message.author.id)] <= 500):
                 await message.channel.send( f'<@{message.author.id}>, you have said creeper {stat[str(message.author.id)]} times')
             else:
                 await message.channel.send(f'<@{message.author.id}>, you have a problem\n fuck you\n {stat[str(message.author.id)]}')
+            if stat[str(message.author.id)] == (None or 0):
+                await message.channel.send(f"<@{uid}> hasn't said creeper yet")
             
         if 'creeper' in message.content.lower():
             if (random.randint(1, 1000) != 999):
