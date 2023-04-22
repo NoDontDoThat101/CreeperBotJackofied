@@ -132,14 +132,21 @@ class MyClient(discord.Client):
         #Test command       
         if message.content.lower() == 'ping':
             await message.channel.send('pong')
-        
-        if message.content.lower() == '!stats':
-            if (stat[str(message.author.id)] <= 500):
-                await message.channel.send( f'<@{message.author.id}>, you have said creeper {stat[str(message.author.id)]} times')
+        m = message.content.lower()
+        if '!stats' in message.content.lower():
+            if not bool(message.mentions):
+                if (stat[str(message.author.id)] <= 500):
+                    await message.channel.send( f'<@{message.author.id}>, you have said creeper {stat[str(message.author.id)]} times')
+                else:
+                    await message.channel.send(f'<@{message.author.id}>, you have a problem\n fuck you\n {stat[str(message.author.id)]}')
+                if stat[str(message.author.id)] == (None or 0):
+                    await message.channel.send(f"<@{uid}> hasn't said creeper yet")
             else:
-                await message.channel.send(f'<@{message.author.id}>, you have a problem\n fuck you\n {stat[str(message.author.id)]}')
-            if stat[str(message.author.id)] == (None or 0):
-                await message.channel.send(f"<@{uid}> hasn't said creeper yet")
+                for uids in message.mentions:
+                    if str(uids.id) in stat:
+                        await message.channel.send(f'<@{message.author.id}>, <@{uids.id}> has said creeper {stat[str(uids.id)]} times')
+                    else:
+                        await message.channel.send(f'<@{message.author.id}>, <@{str(uids.id)}> has said creeper 0 times')
             
         if 'creeper' in message.content.lower():
             if (random.randint(1, 1000) != 999):
