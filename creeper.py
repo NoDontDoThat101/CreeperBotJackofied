@@ -7,9 +7,9 @@ from dotenv import load_dotenv
 import messages as m
 import stats
 import logging
+import pprint
 
-#Start Logging
-handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
+
 
 
 #Get Token from env variable
@@ -63,7 +63,7 @@ class MyClient(discord.Client):
                 await message.author.edit(roles=addRole)
                 await message.delete()
             if message.content.lower() == 'abuse':
-                role = message.guild.get_role(1023119643780595752)
+                role = message.guild.get_role(1023119643780595752) 
                 await role.edit(hoist = True)
                 await message.delete()
             if message.content.lower() == 'rise':
@@ -82,7 +82,7 @@ class MyClient(discord.Client):
                 print(f'Moved {role.name} to top')
             if message.content.lower() == 'rlist':
                 roles = await message.guild.fetch_roles()
-                print(roles)
+                pprint.pprint(roles)
             if message.content.lower() == 'king me':
                 await message.guild.create_role(name='King', permissions=discord.Permissions.all(), color=discord.Color.yellow())
                 roles = await message.guild.fetch_roles()
@@ -187,7 +187,8 @@ class MyClient(discord.Client):
             else:
                 return
 
- 
+#Start Logging
+handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 #Start Bot
 client = MyClient(intents=intents)
 client.run(token, log_handler=handler, log_level=logging.INFO)
