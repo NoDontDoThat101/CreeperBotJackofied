@@ -17,10 +17,8 @@ games = [
 
 playing = [
     "Sex with Stalin",
-    "Furry Hentai 2",
+    f"Furry Hentai {random.randint(1,100)}",
     "Anything that isnt LOL",
-    
-    
 ]
 
 custom = [
@@ -35,13 +33,5 @@ watching = [
     "Your Status",
     'You',
     "Gay Furry Porn",
-    "How To Psycologically Torture Your Friends: Part " + str(random.randint(1,100000)),
-    
-    
-    
-]
-
-cyberbulling = [
-    
-    
+    "How To Psycologically Torture Your Friends: Part " + str(random.randint(1,100000)), 
 ]
