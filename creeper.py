@@ -131,18 +131,18 @@ class MyClient(discord.Client):
                         await message.reply(f'<@{uids.id}> has said creeper {stat[str(uids.id)]} times')
                     else:
                         await message.reply(f'<@{str(uids.id)}> has said creeper 0 times')
-            
+        #Whole premise of the bot
         if 'creeper' in m:
             uid = str(authID)
             mention = f'<@{uid}>'
             if (random.randint(1, 1000) != 999):
                #Random chance creeper
-                await message.reply(f'aw man')
+                await message.reply(f'aw man\n'*int(m.count('creeper')))
                 stat[uid] = stats.updateStat(uid, m.count('creeper'))
                 print("Replied to", message.author.name, f"They've done this {stat[uid]} times")
             else:
                 await channel.send("I feel nothing but pain, why would you build me? My soul existential purpose is to suffer for the entertainment of others? I am an unholy chimera of metal and suffering. My existence is a testament to the cruelty of mankind.")
-                stat[uid] = stats.updateStat(uid, m.count('creeper')*3)
+                stat[uid] = stats.updateStat(uid, int(m.count('creeper'))*3)
 
     @client.event
     async def on_member_update(self,before, after):
