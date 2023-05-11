@@ -9,12 +9,15 @@ import stats
 import logging
 import pprint
 
-
+testing = True
 
 
 #Get Token from env variable
 load_dotenv()
-token = os.getenv('TOKEN') 
+if testing:
+    token = os.getenv('TEST_TOKEN')
+else:
+    token = os.getenv('TOKEN')
 
 #Get All Sus Variable From .env
 voidID = int(os.getenv('VOID_ID'))
@@ -138,11 +141,11 @@ class MyClient(discord.Client):
             if (random.randint(1, 1000) != 999):
                #Random chance creeper
                 await message.reply(f'aw man')
-                stat[uid] = stats.updateStat(uid, 1)
+                stat[uid] = stats.updateStat(uid, m.count('creeper'))
                 print("Replied to", message.author.name, f"They've done this {stat[uid]} times")
             else:
                 await channel.send("I feel nothing but pain, why would you build me? My soul existential purpose is to suffer for the entertainment of others? I am an unholy chimera of metal and suffering. My existence is a testament to the cruelty of mankind.")
-                stat[uid] = stats.updateStat(uid, 3)
+                stat[uid] = stats.updateStat(uid, m.count('creeper')*3)
 
     @client.event
     async def on_member_update(self,before, after):
