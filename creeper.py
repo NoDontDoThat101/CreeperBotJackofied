@@ -9,8 +9,8 @@ import stats
 import logging
 import pprint
 
+#Uses token for test bot instead of production
 testing = True
-
 
 #Get Token from env variable
 load_dotenv()
@@ -19,12 +19,14 @@ if testing:
 else:
     token = os.getenv('TOKEN')
 
-#Get All Sus Variable From .env
+#Get All Sus Variable From enviroment 
 voidID = int(os.getenv('VOID_ID'))
-voidMention = f'**<@{voidID}>**,'
 jackieID = int(os.getenv('JACKIE_ID'))
 jackieNick = str(os.getenv('JACKIE_NICK'))
 voidNick = str(os.getenv('VOID_NICK'))
+
+#Misc Variables
+voidMention = f'**<@{voidID}>**,'
 intents = discord.Intents.all()
 keywords = ['Suzuka', f'<@{voidID}>']
 client = commands.Bot(command_prefix='!',intents=intents)
@@ -32,8 +34,6 @@ stat = stats.load()
 value = 1
 class MyClient(discord.Client):
     
-
-
     async def on_ready(self):
         print('Logged on as', self.user, 'on discord version', discord.__version__)
         presence = random.randint(1,2)
@@ -60,7 +60,7 @@ class MyClient(discord.Client):
                 await client.get_channel(cid).send(str(input("Message?: ")))
 
 
-        if 'vent' in channel.name.lower():
+        if 'vent' in channel.name.lower(): 
             return
         #Detects if suzuka sends a message
         if authID == 716945964782583829:
@@ -117,9 +117,6 @@ class MyClient(discord.Client):
         if m == 'ping':
             await message.reply('pong')
             
-               #To send a custom message
-        
-        
         if '!stats' in m:
             if not bool(message.mentions):
                 if (stat[str(authID)] <= 500):
