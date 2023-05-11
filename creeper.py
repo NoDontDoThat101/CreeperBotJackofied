@@ -10,7 +10,7 @@ import logging
 import pprint
 
 #Uses token for test bot instead of production
-testing = True
+testing = False
 
 #Get Token from env variable
 load_dotenv()
