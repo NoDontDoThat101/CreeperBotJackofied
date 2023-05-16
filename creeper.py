@@ -4,6 +4,7 @@ from typing import Any
 import discord
 from discord.enums import Status
 from discord.ext import commands, tasks
+from discord.utils import get
 import discord.client
 from discord.flags import Intents 
 from dotenv import load_dotenv
@@ -12,30 +13,23 @@ import stats
 import logging
 import pprint
 import asyncio
-
-#Uses token for test bot instead of production
-testing = False
-
-#Get Token from env variable
+import os
 load_dotenv()
-if testing:
-    print('This Is A Testing Enviroment, Press enter to confirm, or input anything to run as production')
-    if input() == "":
-        token = os.getenv('TEST_TOKEN')
-    else:
-        token = os.getenv('TOKEN')
+
+if os.path.isfile(r'CreeperBot\testing.txt'):
+    token = os.getenv('TEST_TOKEN')
 else:
     token = os.getenv('TOKEN')
 
 #Get All Sus Variable From enviroment 
-voidID = int(os.getenv('VOID_ID'))
-jackieID = int(os.getenv('JACKIE_ID'))
-jackieNick = str(os.getenv('JACKIE_NICK'))
-voidNick = str(os.getenv('VOID_NICK'))
 
+jackieID = int(os.getenv('JACKIE_ID'))
+voidID = int(os.getenv('VOID_ID'))
+#voidNick = str(os.getenv('VOID_NICK'))
+#voidMention = f'**<@{voidID}>**,'
+#jackieNick = str(os.getenv('JACKIE_NICK'))
 
 #Misc Variables
-voidMention = f'**<@{voidID}>**,'
 intents = discord.Intents.all()
 keywords = ['Suzuka', f'<@{voidID}>']
 client = commands.Bot(command_prefix='!',intents=intents)
@@ -48,13 +42,13 @@ class MyClient(discord.Client):
         await client.wait_until_ready()
         await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=m.status()))
         
+        
     
     @client.event
     async def on_ready(self):
         print('Logged on as', self.user, 'on discord version', discord.__version__)
-
         await self.status_change.start()
-
+                
         
     @client.event
     async def on_message(self, message):
@@ -138,8 +132,15 @@ class MyClient(discord.Client):
             else:
                 await channel.send("I feel nothing but pain, why would you build me? My soul existential purpose is to suffer for the entertainment of others? I am an unholy chimera of metal and suffering. My existence is a testament to the cruelty of mankind.")
                 stat[uid] = stats.updateStat(uid, int(m.count('creeper'))*3)
+            role = discord.utils.get(message.guild.roles, name='CreeperNotifs')
+            try:
+                if role not in message.author.roles:
+                    await message.author.add_roles(role)
+                    print(f'Gave role to {message.author}')
+            except Exception as e:
+                print(e)
 
-    @client.event
+'''    @client.event
     async def on_member_update(self,before, after):
         #Gets user id from before
         if before.id == jackieID:
@@ -164,7 +165,7 @@ class MyClient(discord.Client):
                 else:
                     return
             else:
-                return
+                return'''
 
 #Start Logging
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
