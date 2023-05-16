@@ -1,5 +1,6 @@
 import random
 
+    
 
 banMessages = [
     "Stop playing league of legends",
@@ -35,3 +36,13 @@ watching = [
     "Gay Furry Porn",
     "How To Psycologically Torture Your Friends: Part " + str(random.randint(1,100000)), 
 ]
+
+def status():
+    presence = random.randint(1,2)
+    if presence == 1:
+    #Chooses from watching List
+       return random.choice(watching)
+    if presence == 2:
+    #Chooses from playing List
+       return random.choice(playing)
+    

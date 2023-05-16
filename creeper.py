@@ -1,16 +1,20 @@
 import os 
 import random
+from typing import Any
 import discord
-from discord.ext import commands
-import discord.client 
+from discord.enums import Status
+from discord.ext import commands, tasks
+import discord.client
+from discord.flags import Intents 
 from dotenv import load_dotenv
 import messages as m
 import stats
 import logging
 import pprint
+import asyncio
 
 #Uses token for test bot instead of production
-testing = False
+testing = True
 
 #Get Token from env variable
 load_dotenv()
@@ -38,35 +42,33 @@ client = commands.Bot(command_prefix='!',intents=intents)
 stat = stats.load()
 value = 1
 class MyClient(discord.Client):
+
+    @tasks.loop(seconds=120)
+    async def status_change(self):
+        await client.wait_until_ready()
+        await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=m.status()))
+        
     
+    @client.event
     async def on_ready(self):
         print('Logged on as', self.user, 'on discord version', discord.__version__)
-        presence = random.randint(1,2)
-        if presence == 1:
-            #Chooses from watching List
-            await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=random.choice(m.watching)))
-        if presence == 2:
-            #Chooses from playing List
-            await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=random.choice(m.playing)))
-        #for guilds in client.guilds:
-        #    print(guilds.id)   
-        #    guild = await self.fetch_guild(guilds.id)
-        #    print(guild)
-        #    roles = await guild.fetch_roles()
-        #    #if 'CreeperNotifs' not in roles:
-        #    #    await guild.create_role(name='CreeperNotifs', color=discord.Color.green())
-        
 
+        await self.status_change.start()
+
+        
+    @client.event
     async def on_message(self, message):
+        if message.author == self.user:   #Bot will not reply to itself, on top so nothing will mess with it
+            return
+        
         dm = discord.channel.DMChannel
         m = message.content.lower()
         M = message.content
         channel = message.channel
         authID = message.author.id
         
-        if message.author == self.user: #Bot will not reply to itself
-            return
-        if m == 'ping':                 #Test message to ensure its reciving
+        
+        if m == 'ping':                    #Test message to ensure its reciving
             await message.reply('pong')
         if 'vent' in channel.name.lower(): #Will not reply to any message if the channel has vent in it
             return
@@ -110,7 +112,7 @@ class MyClient(discord.Client):
                 await message.delete()
 
             
-        if '!stats' in m:
+        if '!stats' in m:                   #Statistics
             if not bool(message.mentions):
                 if (stat[str(authID)] <= 500):
                     await message.reply( f'You have said creeper {stat[str(authID)]} times')
@@ -166,6 +168,8 @@ class MyClient(discord.Client):
 
 #Start Logging
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
+
+
 #Start Bot
 client = MyClient(intents=intents)
 client.run(token, log_handler=handler, log_level=logging.INFO)
