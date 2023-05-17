@@ -33,7 +33,6 @@ voidID = int(os.getenv('VOID_ID'))
 intents = discord.Intents.all()
 keywords = ['Suzuka', f'<@{voidID}>']
 client = commands.Bot(command_prefix='!',intents=intents)
-stat = stats.load()
 value = 1
 class MyClient(discord.Client):
 
@@ -60,6 +59,7 @@ class MyClient(discord.Client):
         M = message.content
         channel = message.channel
         authID = message.author.id
+        guild = message.guild.id
         
         
         if m == 'ping':                    #Test message to ensure its reciving
@@ -108,11 +108,11 @@ class MyClient(discord.Client):
             
         if '!stats' in m:                   #Statistics
             if not bool(message.mentions):
-                if (stat[str(authID)] <= 500):
+                if (stat[guild][authID] <= 500):
                     await message.reply( f'You have said creeper {stat[str(authID)]} times')
                 else:
                     await message.reply(f'You have a problem\n fuck you\n {stat[str(authID)]}')
-                if stat[str(authID)] == (None or 0):
+                if stat[guild][str(authID)] == (None or 0):
                     await message.reply(f"<@{uid}> hasn't said creeper yet")
             else:
                 for uids in message.mentions:
@@ -127,11 +127,11 @@ class MyClient(discord.Client):
             if (random.randint(1, 1000) != 999):
                #Random chance creeper
                 await message.reply(f'aw man\n'*int(m.count('creeper')))
-                stat[uid] = stats.updateStat(uid, m.count('creeper'))
-                print("Replied to", message.author.name, f"They've done this {stat[uid]} times")
+                stat[message.guild.id][uid] = stats.updateStat(guild, uid, m.count('creeper'))
+                print("Replied to", message.author.name, f"They've done this {stat[guild][uid]} times")
             else:
                 await channel.send("I feel nothing but pain, why would you build me? My soul existential purpose is to suffer for the entertainment of others? I am an unholy chimera of metal and suffering. My existence is a testament to the cruelty of mankind.")
-                stat[uid] = stats.updateStat(uid, int(m.count('creeper'))*3)
+                stat[message.guild.id][uid] = stats.updateStat(guild, uid, int(m.count('creeper'))*3)
             role = discord.utils.get(message.guild.roles, name='CreeperNotifs')
             try:
                 if role not in message.author.roles:
