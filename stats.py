@@ -1,50 +1,34 @@
 from pathlib import Path
 from os import path
-import pickle
-import pdb
+import json
 
-f = None
-def updateStat(uid, value=1):
-    if type(uid) != str:
-        try:
-            uid = str(uid)
-        except Exception as e:
-            print(e)
-    if type(value) != int:
-        try:
-            value = int(value)
-        except Exception as e:
-            print(e)
-    d = load()
-    if d == {}:
-        d = {uid: value}
-        save(d)
-        return d[uid]
-    if uid in d:
-        d[uid] = d[uid] + value
-    else:
-        d[uid] = value
-    save(d)
-    return d[uid]
-
-def save(data, close=False):
-    with open('D:\Python Scripts\CreeperBot\data.pickle', "wb") as f:
-        pickle.dump(data, f)
-        f.close()
-
+def updateStat(guild,uid, value=1):
+    json_data = load(guild)
+    print(json_data)
+    json_data[guild][uid] += value
+    save(json_data)
+    return json_data[guild][uid]
+    
         
-def load():
-    if not path.exists('D:\Python Scripts\CreeperBot\data.pickle'):
-        f = open('D:\Python Scripts\CreeperBot\data.pickle', "x")
-        f.close()
-        return {}
-    f = open('D:\Python Scripts\CreeperBot\data.pickle', "rb")
+def load(guild):
     try:
-        d = pickle.load(f)  
-    except EOFError:
-        f.close()
-        print ("No data found, returning empty dict")
-        return {}
-    f.close()
+        with open(path.join(Path(__file__).parent.absolute(),"stats.json"),'r+') as f:
+            data = json.load(f)
+            if guild in data:
+                print(data)
+                return data
+            else:
+                data[guild] = {}
+                print(data)
+                return data
+    except FileNotFoundError:
+        with open(path.join(Path(__file__).parent.absolute(),"stats.json"),'x') as f:
+            data = {}
+            data[guild] = {}
+            print(data)
+            return data
+    
+def save(json_data):
+    with open(path.join(Path(__file__).parent.absolute(),"stats.json"), "w") as f:
+        f.write(json.dumps(json_data,f, indent=4))
 
-    return d
