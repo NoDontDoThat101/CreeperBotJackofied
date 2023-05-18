@@ -52,7 +52,7 @@ class MyClient(discord.Client):
         
     @client.event
     async def on_message(self, message):
-        if message.author == self.user:   #Bot will not reply to itself, on top so nothing will mess with it
+        if message.author == (self.user or 568614525134307328):   #Bot will not reply to itself, on top so nothing will mess with it
             return
         
         dm = discord.channel.DMChannel
