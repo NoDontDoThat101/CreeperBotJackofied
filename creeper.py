@@ -37,16 +37,16 @@ value = 1
 stat = 0
 class MyClient(discord.Client):
 
-    @tasks.loop(seconds=120)
+    @tasks.loop(seconds=10)
     async def status_change(self):
         await client.wait_until_ready()
-        r = random.randint(0,2)
-        if random.randint(0,2) == 0:
+        r = random.randint(0,1)
+        if random.randint(0,1) == 0:
             await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=m.status('playing')))
         elif r == 1:    
             await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=m.status('watching')))
-        else: 
-            await client.change_presence(activity=discord.Activity(name=m.status('custom')))
+#        else: 
+#            await client.change_presence(activity=discord.Activity(type= discord.ActivityType.custom,name=m.status('custom')))
         
         
     

@@ -1,14 +1,5 @@
 import random
 
-    
-
-banMessages = [
-    "Stop playing league of legends",
-    "Take a shower",
-    "Among us??? Sussy??? Imposter?????"
-]
-
-
 games = [
     "leauge of legends",
     "genshin impact",
