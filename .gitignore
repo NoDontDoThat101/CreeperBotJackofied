@@ -133,3 +133,4 @@ dmypy.json
 *.pickle
 data.pickle
 testing.txt
+stats.json

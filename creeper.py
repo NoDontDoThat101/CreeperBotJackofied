@@ -33,8 +33,8 @@ voidID = int(os.getenv('VOID_ID'))
 intents = discord.Intents.all()
 keywords = ['Suzuka', f'<@{voidID}>']
 client = commands.Bot(command_prefix='!',intents=intents)
-stat = stats.load()
 value = 1
+stat = 0
 class MyClient(discord.Client):
 
     @tasks.loop(seconds=120)
@@ -60,6 +60,7 @@ class MyClient(discord.Client):
         M = message.content
         channel = message.channel
         authID = message.author.id
+        guild = str(message.guild.id)
         
         
         if m == 'ping':                    #Test message to ensure its reciving
@@ -108,30 +109,30 @@ class MyClient(discord.Client):
             
         if '!stats' in m:                   #Statistics
             if not bool(message.mentions):
-                if (stat[str(authID)] <= 500):
-                    await message.reply( f'You have said creeper {stat[str(authID)]} times')
-                else:
-                    await message.reply(f'You have a problem\n fuck you\n {stat[str(authID)]}')
-                if stat[str(authID)] == (None or 0):
+                v = stats.getStat(guild, str(message.author.id))
+                if (v <= 500):
+                    await message.reply( f'You have said creeper {v} times')
+
+                if v == (None or 0):
                     await message.reply(f"<@{uid}> hasn't said creeper yet")
             else:
                 for uids in message.mentions:
-                    if str(uids.id) in stat:
-                        await message.reply(f'<@{uids.id}> has said creeper {stat[str(uids.id)]} times')
-                    else:
-                        await message.reply(f'<@{str(uids.id)}> has said creeper 0 times')
+                    v = stats.getStat(guild, str(uids.id))
+                    await message.reply(f'<@{uids.id}> has said creeper {v} times')
+                    
         #Whole premise of the bot
         if 'creeper' in m:
+            guild = str(message.guild.id)
             uid = str(authID)
             mention = f'<@{uid}>'
             if (random.randint(1, 1000) != 999):
                #Random chance creeper
                 await message.reply(f'aw man\n'*int(m.count('creeper')))
-                stat[uid] = stats.updateStat(uid, m.count('creeper'))
-                print("Replied to", message.author.name, f"They've done this {stat[uid]} times")
+                stat = stats.updateStat(guild, uid, m.count('creeper'))
+                print("Replied to", message.author.name, f"They've done this {stat} times")
             else:
                 await channel.send("I feel nothing but pain, why would you build me? My soul existential purpose is to suffer for the entertainment of others? I am an unholy chimera of metal and suffering. My existence is a testament to the cruelty of mankind.")
-                stat[uid] = stats.updateStat(uid, int(m.count('creeper'))*3)
+                stats.updateStat(guild, uid, int(m.count('creeper'))*3)
             role = discord.utils.get(message.guild.roles, name='CreeperNotifs')
             try:
                 if role not in message.author.roles:
