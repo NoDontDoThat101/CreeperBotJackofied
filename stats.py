@@ -9,14 +9,10 @@ def updateStat(guild,uid, value=1):
     if uid not in json_data[guild]:
         json_data[guild][uid] = 1
         save(json_data)
-        print(json_data)
-        print(json_data[guild][uid])
         return json_data[guild][uid]
     else:
         json_data[guild][uid] += value
         save(json_data)
-        print(json_data)
-        print(json_data[guild][uid])
         return json_data[guild][uid]
 
 def getStat(guild,uid):
