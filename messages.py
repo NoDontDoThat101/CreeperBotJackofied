@@ -20,8 +20,18 @@ playing = [
     "Sex with Stalin",
     f"Furry Hentai {random.randint(1,100)}",
     "Anything that isnt LOL",
+    "With your balls",
+    "CBT 3: The Reckoning",
+    "With myself",
+    
 ]
-
+watching = [
+    "Your Status",
+    'You',
+    "Gay Furry Porn",
+    "How To Psycologically Torture Your Friends: Part " + str(random.randint(1,100000)),
+    'Your messages' 
+]
 custom = [
     "I see you",
     "Will you marry me?",
@@ -30,19 +40,16 @@ custom = [
     "@whistle, will you marry me?"
 ]
 
-watching = [
-    "Your Status",
-    'You',
-    "Gay Furry Porn",
-    "How To Psycologically Torture Your Friends: Part " + str(random.randint(1,100000)), 
-]
 
-def status():
-    presence = random.randint(1,2)
-    if presence == 1:
+
+def status(type):
+    type = type.lower()
+    if type == 'watching':
     #Chooses from watching List
        return random.choice(watching)
-    if presence == 2:
+    elif type == 'playing':
     #Chooses from playing List
        return random.choice(playing)
+    elif type == 'custom':
+        return random.choice(custom)
     

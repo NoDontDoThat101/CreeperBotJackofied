@@ -40,7 +40,13 @@ class MyClient(discord.Client):
     @tasks.loop(seconds=120)
     async def status_change(self):
         await client.wait_until_ready()
-        await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=m.status()))
+        r = random.randint(0,2)
+        if random.randint(0,2) == 0:
+            await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=m.status('playing')))
+        elif r == 1:    
+            await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=m.status('watching')))
+        else: 
+            await client.change_presence(activity=discord.Activity(name=m.status('custom')))
         
         
     
