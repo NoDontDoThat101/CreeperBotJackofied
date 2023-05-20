@@ -115,6 +115,7 @@ class MyClient(discord.Client):
                 print(e, 'Line 117')
 
 #Start Logging
+handler = logging.FileHandler(filename=path.join(Path(__file__).parent.absolute(), 'discord.log'), encoding='utf-8', mode='w')
 
 
 #Start Bot
