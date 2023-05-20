@@ -14,6 +14,8 @@ import logging
 import pprint
 import asyncio
 import os
+from os import path
+from pathlib import Path
 load_dotenv()
 
 
@@ -62,6 +64,13 @@ class MyClient(discord.Client):
         
     @client.event
     async def on_message(self, message):
+        dm = discord.channel.DMChannel
+        m = message.content.lower()
+        M = message.content
+        channel = message.channel
+        authID = message.author.id
+        guild = str(message.guild.id)
+        
         if message.author.id == (self.user.id or testid):   #Bot will not reply to itself, on top so nothing will mess with it
             return
         if 'vent' in channel.name.lower(): #Will not reply to any message if the channel has vent in it
@@ -69,16 +78,6 @@ class MyClient(discord.Client):
         if testing:
             if m == 'ping':                    #Test message to ensure its reciving
                 await message.reply('pong')
-                
-                
-        dm = discord.channel.DMChannel
-        m = message.content.lower()
-        M = message.content
-        channel = message.channel
-        authID = message.author.id
-        guild = str(message.guild.id)
-        print(type(self.user.id), self.user.id)
-        
                 
         if '!stats' in m:                   #Statistics
             if not bool(message.mentions):
@@ -95,10 +94,8 @@ class MyClient(discord.Client):
                     
         #Whole premise of the bot
         if 'creeper' in m:
-            rareMessage = random.randchoice(lM.rareResponses)
             guild = str(message.guild.id)
             uid = str(authID)
-            mention = f'<@{uid}>'
             creepers = m.count('creeper')
             if (random.randint(1, 1000) != 999):
                #Random chance creeper
@@ -106,6 +103,7 @@ class MyClient(discord.Client):
                 stat = stats.updateStat(guild, uid, creepers)
                 print("Replied to", message.author.name, f"They've done this {stat} times")
             else:
+                rareMessage = random.choice(lM.rareMessages)
                 await channel.send(rareMessage)
                 stats.updateStat(guild, uid, int(creepers)*3)
             role = discord.utils.get(message.guild.roles, name='CreeperNotifs')
@@ -117,7 +115,6 @@ class MyClient(discord.Client):
                 print(e, 'Line 117')
 
 #Start Logging
-handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 
 
 #Start Bot
