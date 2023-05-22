@@ -19,31 +19,24 @@ from pathlib import Path
 load_dotenv()
 
 
-
-
-#Get All Sus Variable From enviroment 
-
-jackieID = int(os.getenv('JACKIE_ID'))
-voidID = int(os.getenv('VOID_ID'))
-testid = int(os.getenv('TEST_ID'))
-
 #Misc Variables
 testing = False
+testid = int(os.getenv('TEST_ID'))
 intents = discord.Intents.all()
-keywords = ['Suzuka', f'<@{voidID}>']
 client = commands.Bot(command_prefix='!',intents=intents)
 value = 1
 stat = 0
 
-if os.path.isfile(r'CreeperBot\testing.txt'):
+if os.path.isfile(path.join(Path(__file__).parent.absolute(), 'testing.txt')):
     token = os.getenv('TEST_TOKEN')
     testing = True
 else:
     token = os.getenv('TOKEN')
     testing = False
 class MyClient(discord.Client):
+    
 
-    @tasks.loop(seconds=10)
+    @tasks.loop(seconds=60)
     async def status_change(self):
         await client.wait_until_ready()
         r = random.randint(0,1)
@@ -111,9 +104,16 @@ class MyClient(discord.Client):
                 if role not in message.author.roles:
                     await message.author.add_roles(role)
                     print(f'Gave role to {message.author}')
-            except Exception as e:
-                print(e, 'Line 117')
-
+            except AttributeError:
+                print(f'{message.guild} does not have role CreeperNotifs, Role was not given to {message.author}')
+                try:
+                    await message.guild.create_role(name='CreeperNotifs', color = discord.Color.green())
+                    print (f'Created CreeperNotifs in {message.guild}')
+                except Exception as e: print(e)
+            except discord.errors.Forbidden:
+                print(f'Forbidden to give role to {message.author}')
+            except Exception as e: print(e)
+                
 #Start Logging
 handler = logging.FileHandler(filename=path.join(Path(__file__).parent.absolute(), 'discord.log'), encoding='utf-8', mode='w')
 
