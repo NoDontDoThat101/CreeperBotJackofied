@@ -92,14 +92,16 @@ class MyClient(discord.Client):
             guild = str(message.guild.id)
             uid = str(authID)
             creepers = m.count('creeper')
-            if (random.randint(1, 100) != 99):
+            chance = random.randint(1, 10)
+            if chance != 2:
                #Random chance creeper
                 await message.reply(f'aw man\n'*int(creepers))
                 stat = stats.updateStat(guild, uid, creepers)
                 print("Replied to", message.author.name, f"They've done this {stat} times")
             else:
-                rareMessage = random.choice(lM.rareMessages)
-                await channel.send(rareMessage)
+                rareMessage = random.choice(lM.rareResponses)
+                await message.reply(rareMessage)
+                print("Replied to", message.author.name, f"They've done this {stat} times and they got a rare message!")
                 stats.updateStat(guild, uid, int(creepers)*3)
             role = discord.utils.get(message.guild.roles, name='CreeperNotifs')
             try:
