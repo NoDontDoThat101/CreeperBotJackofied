@@ -75,11 +75,14 @@ class MyClient(discord.Client):
         if '!stats' in m:                   #Statistics
             if not bool(message.mentions):
                 v = stats.getStat(guild, str(message.author.id))
-                if (v <= 500):
-                    await message.reply( f'You have said creeper {v} times')
-
                 if v == (None or 0):
                     await message.reply(f"<@{uid}> hasn't said creeper yet")
+                elif (v <= 500):
+                    await message.reply( f'You have said creeper {v} times')
+                else:
+                    await message.reply( f'You have said creeper {v} times, you have a problem.\n Please seek medical attention.')
+                
+                
             else:
                 for uids in message.mentions:
                     v = stats.getStat(guild, str(uids.id))
