@@ -52,6 +52,8 @@ class MyClient(discord.Client):
     @client.event
     async def on_ready(self):
         print('Logged on as', self.user, 'on discord version', discord.__version__)
+        firstStatus = random.choice(['playing','watching'])
+        await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=lM.status(firstStatus)))
         await self.status_change.start()
                 
         
