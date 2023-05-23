@@ -44,9 +44,6 @@ class MyClient(discord.Client):
             await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=lM.status('playing')))
         elif r == 1:    
             await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=lM.status('watching')))
-#        else: 
-#            await client.change_presence(activity=discord.Activity(type= discord.ActivityType.custom,name=m.status('custom')))
-        
         
     
     @client.event
@@ -95,7 +92,7 @@ class MyClient(discord.Client):
             guild = str(message.guild.id)
             uid = str(authID)
             creepers = m.count('creeper')
-            if (random.randint(1, 1000) != 999):
+            if (random.randint(1, 100) != 999):
                #Random chance creeper
                 await message.reply(f'aw man\n'*int(creepers))
                 stat = stats.updateStat(guild, uid, creepers)

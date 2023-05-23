@@ -3,18 +3,22 @@ import random
 playing = [
     "Sex with Stalin",
     f"Furry Hentai {random.randint(1,100)}",
-    "Anything that isnt LOL",
+    "Anything that isnt Leauge",
     "With your balls",
     "CBT 3: The Reckoning",
     "With myself",
+    'Porn',
+    
     
 ]
 watching = [
     "Your Status",
     'You',
+    'Through your window',
     "Gay Furry Porn",
     "How To Psycologically Torture Your Friends: Part " + str(random.randint(1,100000)),
-    'Your messages' 
+    'Your messages',
+    'Porn',
 ]
 
 rareResponses = [
