@@ -92,7 +92,7 @@ class MyClient(discord.Client):
             guild = str(message.guild.id)
             uid = str(authID)
             creepers = m.count('creeper')
-            chance = random.randint(1, 10)
+            chance = random.randint(1, 100)
             if chance != 2:
                #Random chance creeper
                 await message.reply(f'aw man\n'*int(creepers))
