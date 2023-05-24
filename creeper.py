@@ -17,10 +17,10 @@ import os
 from os import path
 from pathlib import Path
 load_dotenv()
-
+sync = path.isfile(path.join(Path(__file__).parent.absolute(), 'sync.txt'))
 
 #Misc Variables
-testing = False
+testing = None
 testid = int(os.getenv('TEST_ID'))
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix='!',intents=intents)
@@ -30,10 +30,14 @@ stat = 0
 if path.isfile(path.join(Path(__file__).parent.absolute(), 'testing.txt')):
     token = os.getenv('TEST_TOKEN')
     testing = True
-    stats.sync(True)
+    if sync:
+        stats.sync(True)
 else:
     token = os.getenv('TOKEN')
     testing = False
+    if sync:
+        stats.sync(False)
+
 class MyClient(discord.Client):
     
 
