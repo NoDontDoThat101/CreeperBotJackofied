@@ -64,7 +64,7 @@ def sync(verbose):
             return
     else:
         if verbose:
-            print("Sync Failed")
+            print("Sync Failed:", end=' ')
             print("No sync file")
         return
                 
