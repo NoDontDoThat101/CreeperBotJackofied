@@ -27,9 +27,10 @@ client = commands.Bot(command_prefix='!',intents=intents)
 value = 1
 stat = 0
 
-if os.path.isfile(path.join(Path(__file__).parent.absolute(), 'testing.txt')):
+if path.isfile(path.join(Path(__file__).parent.absolute(), 'testing.txt')):
     token = os.getenv('TEST_TOKEN')
     testing = True
+    stats.sync(True)
 else:
     token = os.getenv('TOKEN')
     testing = False
@@ -71,32 +72,17 @@ class MyClient(discord.Client):
             if m == 'ping':                    #Test message to ensure its reciving
                 await message.reply('pong')
                 
-        if '!stats' in m:                   #Statistics
-            if not bool(message.mentions):
-                v = stats.getStat(guild, str(message.author.id))
-                if v == (None or 0):
-                    await message.reply(f"<@{uid}> hasn't said creeper yet")
-                elif (v <= 500):
-                    await message.reply( f'You have said creeper {v} times')
-                else:
-                    await message.reply( f'You have said creeper {v} times, you have a problem.\n Please seek medical attention.')
                 
-                
-            else:
-                for uids in message.mentions:
-                    v = stats.getStat(guild, str(uids.id))
-                    await message.reply(f'<@{uids.id}> has said creeper {v} times')
-                    
         #Whole premise of the bot
         if 'creeper' in m:
             guild = str(message.guild.id)
             uid = str(authID)
             creepers = m.count('creeper')
             chance = random.randint(1, 100)
+            stat = stats.updateStat(guild, uid, creepers)
             if chance != 2:
                #Random chance creeper
                 await message.reply(f'aw man\n'*int(creepers))
-                stat = stats.updateStat(guild, uid, creepers)
                 print("Replied to", message.author.name, f"They've done this {stat} times")
             else:
                 rareMessage = random.choice(lM.rareResponses)
@@ -116,7 +102,24 @@ class MyClient(discord.Client):
                 except Exception as e: print(e)
             except discord.errors.Forbidden:
                 print(f'Forbidden to give role to {message.author}')
-            except Exception as e: print(e)
+            except Exception as e: print(e)        
+            
+            
+        if '!stats' in m:                   #Statistics
+            if not bool(message.mentions):
+                v = stats.getStat(guild, str(message.author.id))
+                if v == (None or 0):
+                    await message.reply(f"<@{uid}> hasn't said creeper yet")
+                elif (v <= 500):
+                    await message.reply( f'You have said creeper {v} times')
+                else:
+                    await message.reply( f'You have said creeper {v} times, you have a problem.\n Please seek medical attention.')
+            else:
+                for uids in message.mentions:
+                    v = stats.getStat(guild, str(uids.id))
+                    await message.reply(f'<@{uids.id}> has said creeper {v} times')
+                    
+        
                 
 #Start Logging
 handler = logging.FileHandler(filename=path.join(Path(__file__).parent.absolute(), 'discord.log'), encoding='utf-8', mode='w')
