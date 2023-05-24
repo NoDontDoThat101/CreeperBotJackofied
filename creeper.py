@@ -16,6 +16,7 @@ import asyncio
 import os
 from os import path
 from pathlib import Path
+import unicodedata
 load_dotenv()
 sync = path.isfile(path.join(Path(__file__).parent.absolute(), 'sync.txt'))
 
@@ -83,15 +84,16 @@ class MyClient(discord.Client):
             uid = str(authID)
             creepers = m.count('creeper')
             chance = random.randint(1, 100)
+            guildNameFormatted = message.guild.name.encode('ASCII', 'ignore').decode()
             stat = stats.updateStat(guild, uid, creepers)
             if chance != 2:
                #Random chance creeper
                 await message.reply(f'aw man\n'*int(creepers))
-                print("Replied to", message.author.name, f"They've done this {stat} times in", message.guild.name)
+                print("Replied to", message.author.name, f"They've done this {stat} times in", guildNameFormatted)
             else:
                 rareMessage = random.choice(lM.rareResponses)
                 await message.reply(rareMessage)
-                print("Replied to", message.author.name, f"They've done this {stat} times in {message.guild.name} and they got a rare message!")
+                print("Replied to", message.author.name, f"They've done this {stat} times in {guildNameFormatted} and they got a rare message!")
                 stats.updateStat(guild, uid, int(creepers)*3)
             role = discord.utils.get(message.guild.roles, name='CreeperNotifs')
             try:
@@ -99,10 +101,10 @@ class MyClient(discord.Client):
                     await message.author.add_roles(role)
                     print(f'Gave role to {message.author}')
             except AttributeError:
-                print(f'{message.guild} does not have role CreeperNotifs, Role was not given to {message.author}')
+                print(f'{guildNameFormatted} does not have role CreeperNotifs, Role was not given to {message.author}')
                 try:
                     await message.guild.create_role(name='CreeperNotifs', color = discord.Color.green())
-                    print (f'Created CreeperNotifs in {message.guild}')
+                    print (f'Created CreeperNotifs in {guildNameFormatted}')
                 except Exception as e: print(e)
             except discord.errors.Forbidden:
                 print(f'Forbidden to give role to {message.author}')
