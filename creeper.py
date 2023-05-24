@@ -87,11 +87,11 @@ class MyClient(discord.Client):
             if chance != 2:
                #Random chance creeper
                 await message.reply(f'aw man\n'*int(creepers))
-                print("Replied to", message.author.name, f"They've done this {stat} times")
+                print("Replied to", message.author.name, f"They've done this {stat} times in", message.guild.name)
             else:
                 rareMessage = random.choice(lM.rareResponses)
                 await message.reply(rareMessage)
-                print("Replied to", message.author.name, f"They've done this {stat} times and they got a rare message!")
+                print("Replied to", message.author.name, f"They've done this {stat} times in {message.guild.name} and they got a rare message!")
                 stats.updateStat(guild, uid, int(creepers)*3)
             role = discord.utils.get(message.guild.roles, name='CreeperNotifs')
             try:
