@@ -57,6 +57,10 @@ def sync(verbose):
                 save(json_data)
                 if verbose:
                     print("Synced")
+        except OSError as e:
+            if verbose:
+                print("Sync Failed, destination unreachable")
+                return
         except Exception as e:
             if verbose:
                 print("Sync Failed")
@@ -68,3 +72,30 @@ def sync(verbose):
             print("No sync file")
         return
                 
+def resetStat(guild, uid):
+    guild = str(guild)
+    uid = str(uid)
+    json_data = load(guild)
+    json_data[guild][uid] = 0
+    save(json_data)
+    return json_data[guild][uid]
+
+
+def resetAll(guild):
+    if input("Are you sure you want to reset all stats? (y/n)") == "y":
+        guild = str(guild)
+        try:
+            json_data = load(guild)
+        except Exception as e:
+            print(e)
+            return False
+        for uid in json_data[guild]:
+            json_data[guild][uid] = 0
+        try:
+            save(json_data)
+        except Exception as e:
+            print(e)
+            return False
+        return True
+    else: 
+        return False

@@ -112,6 +112,21 @@ class MyClient(discord.Client):
             
             
         if '!stats' in m:                   #Statistics
+            if m.startswith('!stats reset'):
+                if str(message.author.id) == ('341767947309678603'):
+                    if message.mentions == []:
+                        await message.reply('Please confrim in console.')
+                        if stats.resetAll(guild):
+                           await message.reply('All stats for this server have been reset')
+                        else:
+                           await message.reply('Stats have not been reset')
+                    for uids in message.mentions:
+                        stats.resetStat(guild, str(uids.id))
+                        await message.reply(f'Stats for <@{uids.id}> have been reset')
+                    return
+                else: 
+                    await message.reply('You do not have permission to do this, ping Void because he\'s the only one with permission')
+                    return
             if not bool(message.mentions):
                 v = stats.getStat(guild, str(message.author.id))
                 if v == (None or 0):
