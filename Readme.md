@@ -1,6 +1,6 @@
 # Creeper
 ## The perfect bot to annoy your friends!
-Are you tired of uhaving a good relationship in your Minecraft discord server?  
+Are you tired of having a good relationship in your Minecraft discord server?  
 Do you want to be constannly annoyed by the threat of an 'aw man'?  
 Do you want chaos to erupt to see who can get the highest amount of useless intrenet points?
 
