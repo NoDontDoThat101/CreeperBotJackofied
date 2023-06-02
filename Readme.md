@@ -1,11 +1,14 @@
-# Creeper
-## The perfect bot to annoy your friends!
-Are you tired of having a good relationship in your Minecraft discord server?  
-Do you want to be constannly annoyed by the threat of an 'aw man'?  
+# The perfect bot to annoy your friends!
+Are you tired of having a good relationship in your Minecraft discord server? 
+
+Do you want to be constantly annoyed by the threat of an 'aw man'?  
+
+Do you want to start an internal torment between every server member because it's funny?
+
 Do you want chaos to erupt to see who can get the highest amount of useless intrenet points?
 
 **This is the bot for you!**  
-## Features:
+# Features:
 - Statistics
     - Counts the amount of time a user has said creeper
     - Bullys them if they say it too much
@@ -28,7 +31,7 @@ Do you want chaos to erupt to see who can get the highest amount of useless intr
 - Testing Mode
     - Want to test your own code? Just add a testing.txt to the folder and use a test token instead of a production!
 
-## Usage
+# Usage
 - 1. Invite creeper to your server
 - 2. Start creeper.py
     - 1. If you want to test your own code on a seperate bot add an empty file called 'testing.txt'
