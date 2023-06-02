@@ -13,7 +13,7 @@ Do you want chaos to erupt to see who can get the highest amount of useless intr
     - Users will see stats on a per server basis (ie: If said 20 times on one guild and 40 on another users will only see the 20 or 40) 
 
 - Restraint
-    - The bot will not do anything if the channel contains the word "vent"
+    - The bot will not do anything if the channel name contains the word "vent"
     - The bot will also not reply to itself causing an infinite loop of messages
 
 - Editable status messages
