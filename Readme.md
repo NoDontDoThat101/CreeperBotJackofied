@@ -11,6 +11,7 @@ Do you want chaos to erupt to see who can get the highest amount of useless intr
     - Bullys them if they say it too much
     - Users can see how many times they have said it by typing "!stats"
     - Users will see stats on a per server basis (ie: If said 20 times on one guild and 40 on another users will only see the 20 or 40) 
+    - You can reset your or evenyone's stats with !stats reset
 
 - Restraint
     - The bot will not do anything if the channel name contains the word "vent"
