@@ -115,11 +115,8 @@ class MyClient(discord.Client):
             if m.startswith('!stats reset'):
                 if str(message.author.id) == ('341767947309678603'):
                     if message.mentions == []:
-                        await message.reply('Please confrim in console.')
-                        if stats.resetAll(guild):
-                           await message.reply('All stats for this server have been reset')
-                        else:
-                           await message.reply('Stats have not been reset')
+                        await message.reply('Mention a user shitass')
+                        return
                     for uids in message.mentions:
                         stats.resetStat(guild, str(uids.id))
                         await message.reply(f'Stats for <@{uids.id}> have been reset')
@@ -127,18 +124,37 @@ class MyClient(discord.Client):
                 else: 
                     await message.reply('You do not have permission to do this, ping Void because he\'s the only one with permission')
                     return
+            if m == '!stats reset all':
+                if stats.resetAll(guild):
+                   await message.reply('All stats for this server have been reset')
+                   return
+                else:
+                   await message.reply('Stats have not been reset')
+                   return
+                    
             if not bool(message.mentions):
                 v = stats.getStat(guild, str(message.author.id))
                 if v == (None or 0):
                     await message.reply(f"<@{uid}> hasn't said creeper yet")
+                    return
                 elif (v <= 500):
                     await message.reply( f'You have said creeper {v} times')
+                    return
                 else:
                     await message.reply( f'You have said creeper {v} times, you have a problem.\n Please seek medical attention.')
+                    return
             else:
                 for uids in message.mentions:
                     v = stats.getStat(guild, str(uids.id))
-                    await message.reply(f'<@{uids.id}> has said creeper {v} times')
+                if v == (None or 0):
+                    await message.reply(f"<@{uid}> hasn't said creeper yet")
+                    return
+                elif (v <= 500):
+                    await message.reply( f'You have said creeper {v} times')
+                    return
+                else:
+                    await message.reply( f'You have said creeper {v} times, you have a problem.\n Please seek medical attention.')
+                    return
                     
         
                 
