@@ -11,12 +11,9 @@ from dotenv import load_dotenv
 import messages as lM
 import stats
 import logging
-import pprint
-import asyncio
 import os
 from os import path
 from pathlib import Path
-import unicodedata
 load_dotenv()
 sync = path.isfile(path.join(Path(__file__).parent.absolute(), 'sync.txt'))
 
