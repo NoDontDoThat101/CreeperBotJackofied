@@ -111,6 +111,14 @@ class MyClient(discord.Client):
             
             
         if '!stats' in m:                   #Statistics
+            if m == '!stats all':
+                allStats = stats.getAllStats(guild)
+                response = ''
+                for each in allStats.keys():
+                    line = f'<@{each}> has said creeper {allStats[each]} times\n'
+                    response = response + line 
+                await message.reply(response)
+                return
             if m.startswith('!stats reset'):
                 if str(message.author.id) in authorizedUsers:
                     if message.mentions == []:

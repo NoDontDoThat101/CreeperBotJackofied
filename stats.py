@@ -2,6 +2,11 @@ from pathlib import Path
 import os
 import json
 
+def getAllStats(guild):
+    guild = str(guild)
+    json_data = load(guild)
+    return json_data[guild]
+
 def updateStat(guild,uid, value=1):
     guild = str(guild)
     uid = str(uid)
