@@ -133,6 +133,7 @@ class MyClient(discord.Client):
                 for each in allStats.keys():
                     value = value + allStats[each]
                 await message.reply(f'Creeper has been said {value} times in this server')
+                return
             if m.startswith('!stats reset'):
                 if str(message.author.id) in authorizedUsers:
                     if message.mentions == []:
