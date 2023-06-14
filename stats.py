@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 import json
+import datetime
 
 def getAllStats(guild):
     guild = str(guild)
@@ -76,6 +77,20 @@ def sync(verbose):
             print("Sync Failed:", end=' ')
             print("No sync file")
         return
+    
+def backup(verbose):
+    if os.path.isfile(os.path.join(Path(__file__).parent.absolute(), 'backups\\backup.txt')):
+        print (True)
+        try:
+            with open(os.path.join(Path(__file__).parent.absolute(),"stats.json"),'r+') as f:
+                data = json.load(f)
+                time = datetime.date.today()
+                with open(os.path.join(Path(__file__).parent.absolute(),f'backups\\{time}_backup.json'),'w') as f2:
+                    f2.write(json.dumps(data, indent=4))
+                if verbose:
+                    print ("Backup Successful at", time)
+        except Exception as e: print('Backup failed at', time, '\n', e)
+    
                 
 def resetStat(guild, uid):
     guild = str(guild)

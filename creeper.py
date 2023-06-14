@@ -27,15 +27,18 @@ intents = discord.Intents.all()
 client = commands.Bot(command_prefix='!',intents=intents)
 value = 1
 stat = 0
+verbose = None
 
 if path.isfile(path.join(Path(__file__).parent.absolute(), 'testing.txt')):
     token = os.getenv('TEST_TOKEN')
     testing = True
+    verbose = True
     if sync:
         stats.sync(True)
 else:
     token = os.getenv('TOKEN')
     testing = False
+    verbose = False
     if sync:
         stats.sync(False)
 
@@ -50,6 +53,12 @@ class MyClient(discord.Client):
             await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=lM.status('playing')))
         elif r == 1:    
             await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=lM.status('watching')))
+            
+    @tasks.loop(hours=24)
+    async def backupCycle(self):
+        stats.backup(verbose)
+            
+            
         
     
     @client.event
@@ -57,7 +66,9 @@ class MyClient(discord.Client):
         print('Logged on as', self.user, 'on discord version', discord.__version__)
         firstStatus = random.choice(['playing','watching'])
         await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=lM.status(firstStatus)))
+        stats.backup(verbose)
         await self.status_change.start()
+        await self.backupCycle.start()
                 
         
     @client.event
@@ -119,6 +130,12 @@ class MyClient(discord.Client):
                     response = response + line 
                 await message.reply(response)
                 return
+            if m == '!stats total':
+                allStats = stats.getAllStats(guild)
+                value = 0
+                for each in allStats.keys():
+                    value = value + allStats[each]
+                await message.reply(f'Creeper has been said {value} times in this server')
             if m.startswith('!stats reset'):
                 if str(message.author.id) in authorizedUsers:
                     if message.mentions == []:
