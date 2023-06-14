@@ -62,12 +62,11 @@ class MyClient(discord.Client):
         
     @client.event
     async def on_message(self, message):
-        dm = discord.channel.DMChannel
         m = message.content.lower()
-        M = message.content
         channel = message.channel
         authID = message.author.id
         guild = str(message.guild.id)
+        authorizedUsers = ['341767947309678603', '831180756562608159']
         
         if message.author.id == (self.user.id or testid):   #Bot will not reply to itself, on top so nothing will mess with it
             return
@@ -113,25 +112,28 @@ class MyClient(discord.Client):
             
         if '!stats' in m:                   #Statistics
             if m.startswith('!stats reset'):
-                if str(message.author.id) == ('341767947309678603'):
+                if str(message.author.id) in authorizedUsers:
                     if message.mentions == []:
                         await message.reply('Mention a user shitass')
                         return
                     for uids in message.mentions:
-                        stats.resetStat(guild, str(uids.id))
-                        await message.reply(f'Stats for <@{uids.id}> have been reset')
+                        if uids.id == '341767947309678603':
+                            await message.reply('Nah fuck you')
+                        else:
+                            stats.resetStat(guild, str(uids.id))
+                            await message.reply(f'Stats for <@{uids.id}> have been reset')
                     return
                 else: 
                     await message.reply('You do not have permission to do this, ping Void because he\'s the only one with permission')
                     return
             if m == '!stats reset all':
+                await message.reply('Confirm in console')
                 if stats.resetAll(guild):
                    await message.reply('All stats for this server have been reset')
                    return
                 else:
                    await message.reply('Stats have not been reset')
-                   return
-                    
+                   return  
             if not bool(message.mentions):
                 v = stats.getStat(guild, str(message.author.id))
                 if v == (None or 0):
@@ -153,7 +155,7 @@ class MyClient(discord.Client):
                     await message.reply( f'You have said creeper {v} times')
                     return
                 else:
-                    await message.reply( f'You have said creeper {v} times, you have a problem.\n Please seek medical attention.')
+                    await message.reply( f'You have said creeper {v} times, you have a problem.\nPlease seek medical attention.')
                     return
                     
         
