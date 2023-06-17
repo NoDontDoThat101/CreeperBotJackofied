@@ -27,17 +27,16 @@ stat = 0
 verbose = None
 backupChannel = int(config['DATA']['backupChannel'])
 sync = bool(config['DATA']['sync'])
+testid = int(config['TESTING']['testID'])
 
 if path.isfile(path.join(Path(__file__).parent.absolute(), 'testing.txt')):
     token = config['TESTING']['testToken']
     testing = True
-    testid = int(config['TESTING']['testID'])
     verbose = True
 else:
     token = config['TOKEN']['token']
     testing = False
     verbose = False
-    testid = None
 if sync:
     data.sync(verbose, config['DATA']['syncDir'])
 
