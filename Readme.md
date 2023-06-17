@@ -31,11 +31,15 @@ Do you want chaos to erupt to see who can get the highest amount of useless intr
 - Testing Mode
     - Want to test your own code? Just add a testing.txt to the folder and use a test token instead of a production!
 
+- Backups
+    - The bot takes daily backups of stats into a dedicated channel if the settings are set
+
 # Usage
 - 1. Invite creeper to your server
-- 2. Start creeper.py
+- 2. Edit config and rename it from config_deafult.cfg to config.cfg
+- 3. Start creeper.py
     - 1. If you want to test your own code on a seperate bot add an empty file called 'testing.txt'
     - 2. If you'd like to sync files from a network source for add a file named 'sync.txt' and add the location in the first line, 'stats.json' will be synced from that network source
-- 3. Watch the chaos unfold
+- 4. Watch the chaos unfold
 
 # Dont wait, Call Creeper today!

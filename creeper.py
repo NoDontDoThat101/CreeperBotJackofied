@@ -2,12 +2,9 @@ import os
 import random
 from typing import Any
 import discord
-from discord.enums import Status
 from discord.ext import commands, tasks
 from discord.utils import get
 import discord.client
-from discord.flags import Intents 
-from dotenv import load_dotenv
 import messages as lM
 import stats
 import logging
@@ -15,32 +12,34 @@ import data
 import os
 from os import path
 from pathlib import Path
-import asyncio
-load_dotenv()
-sync = path.isfile(path.join(Path(__file__).parent.absolute(), 'sync.txt'))
+import configparser
 
-#Misc Variables
-testing = None
-testid = int(os.getenv('TEST_ID'))
+
+config = configparser.ConfigParser()
+config.read('config.cfg')
+
+testing = bool(config['TESTING']['testing'])
+
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix='!',intents=intents)
 value = 1
 stat = 0
 verbose = None
-backupChannel = int(os.getenv('BACKUP_CHANNEL'))
+backupChannel = int(config['DATA']['backupChannel'])
+sync = bool(config['DATA']['sync'])
 
 if path.isfile(path.join(Path(__file__).parent.absolute(), 'testing.txt')):
-    token = os.getenv('TEST_TOKEN')
+    token = config['TESTING']['testToken']
     testing = True
+    testid = int(config['TESTING']['testID'])
     verbose = True
-    if sync:
-        data.sync(True)
 else:
-    token = os.getenv('TOKEN')
+    token = config['TOKEN']['token']
     testing = False
     verbose = False
-    if sync:
-        data.sync(False)
+    testid = None
+if sync:
+    data.sync(verbose, config['DATA']['syncDir'])
 
 class MyClient(discord.Client):
     
@@ -62,9 +61,9 @@ class MyClient(discord.Client):
         firstStatus = random.choice(['playing','watching'])
         await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=lM.status(firstStatus)))
         client.status_change.start()
-        if os.path.isfile(os.path.join(Path(__file__).parent.absolute(), 'backup.txt')):
-            stats.backup.start(self, backupChannel)
-        elif verbose: print ('Backups will not be made as backup.txt does not exist')
+        if bool(config['DATA']['backup']):
+            data.backup.start(self, backupChannel)
+        elif verbose: print ('Backups will not be made as the setting is false')
         
     @client.event
     async def on_message(self, message):
