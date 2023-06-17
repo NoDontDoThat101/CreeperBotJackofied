@@ -62,8 +62,9 @@ class MyClient(discord.Client):
         firstStatus = random.choice(['playing','watching'])
         await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=lM.status(firstStatus)))
         client.status_change.start()
-        stats.backup.start(self, backupChannel)
-                
+        if os.path.isfile(os.path.join(Path(__file__).parent.absolute(), 'backup.txt')):
+            stats.backup.start(self, backupChannel)
+        elif verbose: print ('Backups will not be made as backup.txt does not exist')
         
     @client.event
     async def on_message(self, message):
