@@ -14,6 +14,7 @@ import logging
 import os
 from os import path
 from pathlib import Path
+import asyncio
 load_dotenv()
 sync = path.isfile(path.join(Path(__file__).parent.absolute(), 'sync.txt'))
 
@@ -31,17 +32,16 @@ if path.isfile(path.join(Path(__file__).parent.absolute(), 'testing.txt')):
     testing = True
     verbose = True
     if sync:
-        stats.sync(True)
+        data.sync(True)
 else:
     token = os.getenv('TOKEN')
     testing = False
     verbose = False
     if sync:
-        stats.sync(False)
+        data.sync(False)
 
 class MyClient(discord.Client):
     
-
     @tasks.loop(seconds=60)
     async def status_change(self):
         await client.wait_until_ready()
@@ -51,21 +51,15 @@ class MyClient(discord.Client):
         elif r == 1:    
             await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=lM.status('watching')))
             
-    @tasks.loop(hours=24)
-    async def backupCycle(self):
-        stats.backup(verbose)
-            
-            
-        
+
     
     @client.event
     async def on_ready(self):
         print('Logged on as', self.user, 'on discord version', discord.__version__)
+        self._tasks = []
         firstStatus = random.choice(['playing','watching'])
         await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=lM.status(firstStatus)))
-        stats.backup(verbose)
-        await self.status_change.start()
-        await self.backupCycle.start()
+        client.status_change.start()
                 
         
     @client.event
@@ -180,7 +174,8 @@ class MyClient(discord.Client):
                 else:
                     await message.reply( f'You have said creeper {v} times, you have a problem.\nPlease seek medical attention.')
                     return
-                    
+
+
         
                 
 #Start Logging
