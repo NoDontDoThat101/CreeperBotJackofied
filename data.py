@@ -52,3 +52,17 @@ def sync(verbose):
             print("No sync file")
         return
     
+@tasks.loop(hours=24)
+async def backup(client, channelID):
+    if os.path.isfile(os.path.join(Path(__file__).parent.absolute(), 'stats.json')):
+        try:
+            with open(os.path.join(Path(__file__).parent.absolute(),'stats.json'),'r') as f:
+                channel = client.get_channel(channelID)
+                await channel.send(f.read())
+        except Exception as e:
+            print('Backup Failed\n', e)
+            backup.cancel()
+    else:
+        print('Backup Failed\nNo stats file')
+
+                

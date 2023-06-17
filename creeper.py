@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 import messages as lM
 import stats
 import logging
+import data
 import os
 from os import path
 from pathlib import Path
@@ -26,6 +27,7 @@ client = commands.Bot(command_prefix='!',intents=intents)
 value = 1
 stat = 0
 verbose = None
+backupChannel = int(os.getenv('BACKUP_CHANNEL'))
 
 if path.isfile(path.join(Path(__file__).parent.absolute(), 'testing.txt')):
     token = os.getenv('TEST_TOKEN')
@@ -60,6 +62,7 @@ class MyClient(discord.Client):
         firstStatus = random.choice(['playing','watching'])
         await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=lM.status(firstStatus)))
         client.status_change.start()
+        stats.backup.start(self, backupChannel)
                 
         
     @client.event
@@ -73,6 +76,8 @@ class MyClient(discord.Client):
         if message.author.id == (self.user.id or testid):   #Bot will not reply to itself, on top so nothing will mess with it
             return
         if 'vent' in channel.name.lower(): #Will not reply to any message if the channel has vent in it
+            return
+        if int(channel.id) == 1119454395151695992:
             return
         if testing:
             if m == 'ping':                    #Test message to ensure its reciving
