@@ -18,24 +18,23 @@ import configparser
 config = configparser.ConfigParser()
 config.read('config.cfg')
 
-testing = bool(config['TESTING']['testing'])
-
+#Discord client variables
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix='!',intents=intents)
+
 value = 1
 stat = 0
-verbose = None
+
 backupChannel = int(config['DATA']['backupChannel'])
 sync = bool(config['DATA']['sync'])
+testing = bool(config['TESTING']['testing'])
 testid = int(config['TESTING']['testID'])
 
-if path.isfile(path.join(Path(__file__).parent.absolute(), 'testing.txt')):
+if testing:
     token = config['TESTING']['testToken']
-    testing = True
     verbose = True
 else:
     token = config['TOKEN']['token']
-    testing = False
     verbose = False
 if sync:
     data.sync(verbose, config['DATA']['syncDir'])
