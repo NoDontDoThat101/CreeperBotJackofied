@@ -1,15 +1,11 @@
-import os 
 import random
-from typing import Any
 import discord
 from discord.ext import commands, tasks
-from discord.utils import get
 import discord.client
 import messages as lM
 import stats
 import logging
 import data
-import os
 from os import path
 from pathlib import Path
 import configparser
