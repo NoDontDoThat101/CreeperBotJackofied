@@ -54,3 +54,5 @@ def resetAll(guild):
         return True
     else: 
         return False
+    
+    

@@ -20,9 +20,10 @@ client = commands.Bot(command_prefix='!',intents=intents)
 
 value = 1
 stat = 0
-
+#Data variables
 backupChannel = int(config['DATA']['backupChannel'])
 sync = bool(config['DATA']['sync'])
+#Test variables
 testing = bool(config['TESTING']['testing'])
 testid = int(config['TESTING']['testID'])
 
@@ -51,11 +52,10 @@ class MyClient(discord.Client):
     @client.event
     async def on_ready(self):
         print('Logged on as', self.user, 'on discord version', discord.__version__)
-        self._tasks = []
         firstStatus = random.choice(['playing','watching'])
         await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=lM.status(firstStatus)))
         client.status_change.start()
-        if bool(config['DATA']['backup']):
+        if bool(config['DATA']['backup']) and not testing:
             data.backup.start(self, backupChannel)
         elif verbose: print ('Backups will not be made as the setting is false')
         
