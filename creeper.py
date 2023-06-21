@@ -177,7 +177,21 @@ class MyClient(discord.Client):
                 else:
                     await message.reply( f'You have said creeper {v} times, you have a problem.\nPlease seek medical attention.')
                     return
-
+    @client.event
+    async def on_member_update(self, before, after):
+        guild = client.get_guild(before.guild.id)
+        role = discord.utils.get(guild.roles, name='CreeperNotifs')
+        if before.roles != after.roles:
+            if role in before.roles:
+                if role not in after.roles:
+                    try:
+                        await after.add_roles(role)
+                        print(f'Gave role to {after.name}')
+                        await after.send('You cant escape.')
+                    except discord.Forbidden as e:
+                        print ('Action Forbidden')
+                        print (e)
+        
 
         
                 
