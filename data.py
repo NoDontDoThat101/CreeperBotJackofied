@@ -3,6 +3,11 @@ import os
 import json
 import discord.ext.tasks as tasks
 
+def checkConfig(value):
+    if value == 'False':
+        return False
+    elif value == 'True':
+        return True
 
 def load(guild):
     data = {}

@@ -22,9 +22,9 @@ value = 1
 stat = 0
 #Data variables
 backupChannel = int(config['DATA']['backupChannel'])
-sync = bool(config['DATA']['sync'])
+sync = data.checkConfig(config['DATA']['sync'])
 #Test variables
-testing = bool(config['TESTING']['testing'])
+testing = data.checkConfig(config['TESTING']['testing'])
 testid = int(config['TESTING']['testID'])
 
 if testing:
@@ -55,7 +55,7 @@ class MyClient(discord.Client):
         firstStatus = random.choice(['playing','watching'])
         await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=lM.status(firstStatus)))
         client.status_change.start()
-        if bool(config['DATA']['backup']) and not testing:
+        if data.checkConfig(config['DATA']['backup']) and not testing:
             data.backup.start(self, backupChannel)
         elif verbose: print ('Backups will not be made as the setting is false')
         
