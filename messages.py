@@ -7,7 +7,7 @@ playing = [
     "With your balls",
     "CBT 3: The Reckoning",
     "With myself",
-    'Porn',
+    
     
     
 ]
@@ -18,7 +18,7 @@ watching = [
     "Gay Furry Porn",
     "How To Psycologically Torture Your Friends: Part " + str(random.randint(1,100000)),
     'Your messages',
-    'Porn',
+    'Porn with your mother',
 ]
 
 rareResponses = [
