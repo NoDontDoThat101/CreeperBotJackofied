@@ -40,6 +40,6 @@ Do you want chaos to erupt to see who can get the highest amount of useless intr
 - 3. Start creeper.py
     - 1. If you want to test your own code on a seperate bot add an empty file called 'testing.txt'
     - 2. If you'd like to sync files from a network source for add a file named 'sync.txt' and add the location in the first line, 'stats.json' will be synced from that network source
-- 4. Watch the chaos unfold
+- 4. Chaos
 
 # Dont wait, Call Creeper today!
