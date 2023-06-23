@@ -9,6 +9,7 @@ import data
 from os import path
 from pathlib import Path
 import configparser
+import re
 
 
 config = configparser.ConfigParser()
@@ -26,6 +27,7 @@ sync = data.checkConfig(config['DATA']['sync'])
 #Test variables
 testing = data.checkConfig(config['TESTING']['testing'])
 testid = int(config['TESTING']['testID'])
+ids = []
 
 if testing:
     token = config['TESTING']['testToken']
@@ -61,14 +63,29 @@ class MyClient(discord.Client):
         
     @client.event
     async def on_message(self, message):
+        if message.author.id == (self.user.id or testid):   #Bot will not reply to itself, on top so nothing will mess with it
+            return
         m = message.content.lower()
-        channel = message.channel
         authID = message.author.id
+        if isinstance(message.channel, discord.DMChannel):
+            if message.author.id == 341767947309678603:
+                ids = re.findall(r'(\d+)', message.content)
+                for each in range(0, len(ids)):
+                    ids[each]=int(ids[each])
+                    
+                print (ids)
+                for user in ids:
+                    toSend= re.search(r'\n(.+)', message.content)
+                    response = client.get_user(user)
+                    await response.send(toSend.group(1))
+            responder =  client.get_user(341767947309678603)
+            await responder.send(str(message.author.id)+' : '+ message.author.name + ' sent the following:' + '\n' + message.content )
+            return       
+        channel = message.channel
+        
         guild = str(message.guild.id)
         authorizedUsers = ['341767947309678603', '831180756562608159']
         
-        if message.author.id == (self.user.id or testid):   #Bot will not reply to itself, on top so nothing will mess with it
-            return
         if 'vent' in channel.name.lower(): #Will not reply to any message if the channel has vent in it
             return
         if int(channel.id) == 1119454395151695992:
@@ -76,7 +93,7 @@ class MyClient(discord.Client):
         if testing:
             if m == 'ping':                    #Test message to ensure its reciving
                 await message.reply('pong')
-                
+
                 
         #Whole premise of the bot
         if 'creeper' in m:
