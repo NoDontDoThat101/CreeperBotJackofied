@@ -72,8 +72,6 @@ class MyClient(discord.Client):
                 ids = re.findall(r'(\d+)', message.content)
                 for each in range(0, len(ids)):
                     ids[each]=int(ids[each])
-                    
-                print (ids)
                 for user in ids:
                     toSend= re.search(r'\n(.+)', message.content)
                     response = client.get_user(user)
