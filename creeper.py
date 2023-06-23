@@ -79,7 +79,8 @@ class MyClient(discord.Client):
                     response = client.get_user(user)
                     await response.send(toSend.group(1))
             responder =  client.get_user(341767947309678603)
-            await responder.send(str(message.author.id)+' : '+ message.author.name + ' sent the following:' + '\n' + message.content )
+            if message.author.id != 341767947309678603:
+                await responder.send(str(message.author.id)+' : '+ message.author.name + ' sent the following:' + '\n' + message.content )
             return       
         channel = message.channel
         
@@ -119,6 +120,7 @@ class MyClient(discord.Client):
             role = discord.utils.get(message.guild.roles, name='CreeperNotifs')
             try:
                 if role not in message.author.roles:
+                    await message.reply('You have accepted these terms, there isn\'t a way out anymore')
                     await message.author.add_roles(role)
                     print(f'Gave role to {message.author}')
             except AttributeError:
