@@ -138,7 +138,6 @@ class MyClient(discord.Client):
                     print(f'Forbidden to give role to {message.author}')
                 except Exception as e: print(e)
         else: 
-            await message.author.send('You have been blacklisted from creeper')
             return        
         authorizedUsers = config['IDS']['authorizedUsers']  
         authorizedUsers = data.extractID(authorizedUsers) 
