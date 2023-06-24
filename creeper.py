@@ -65,6 +65,8 @@ class MyClient(discord.Client):
         
     @client.event
     async def on_message(self, message):
+        channel = message.channel
+        guild = str(message.guild.id)
         if 'vent' in channel.name.lower(): #Will not reply to any message if the channel has vent in it
             return
         if random.randint(1, 10000) == 5:
@@ -86,9 +88,9 @@ class MyClient(discord.Client):
             if message.author.id != ownerID:
                 await responder.send(str(message.author.id)+' : '+ message.author.name + ' sent the following:' + '\n' + message.content )
             return       
-        channel = message.channel
         
-        guild = str(message.guild.id)
+        
+        
         
         
         if int(channel.id) == 1119454395151695992:
