@@ -19,8 +19,10 @@ config.read('config.cfg')
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix='!',intents=intents)
 
+ownerID = int(config['IDS']['ownerID'])
 value = 1
 stat = 0
+blacklist = data.extractID(config['IDS']['blacklist'])
 #Data variables
 backupChannel = int(config['DATA']['backupChannel'])
 sync = data.checkConfig(config['DATA']['sync'])
@@ -63,12 +65,16 @@ class MyClient(discord.Client):
         
     @client.event
     async def on_message(self, message):
+        if 'vent' in channel.name.lower(): #Will not reply to any message if the channel has vent in it
+            return
+        if random.randint(1, 10000) == 5:
+                await message.send('Never gonna give you up\nNever gonna let you down\nNever gonna run around and desert you\nNever gonna make you cry\nNever gonna say goodbye\nNever gonna tell a lie and hurt you')
         if message.author.id == (self.user.id or testid):   #Bot will not reply to itself, on top so nothing will mess with it
             return
         m = message.content.lower()
         authID = message.author.id
         if isinstance(message.channel, discord.DMChannel):
-            if message.author.id == 341767947309678603:
+            if message.author.id == ownerID:
                 ids = re.findall(r'(\d+)', message.content)
                 for each in range(0, len(ids)):
                     ids[each]=int(ids[each])
@@ -76,17 +82,15 @@ class MyClient(discord.Client):
                     toSend= re.search(r'\n(.+)', message.content)
                     response = client.get_user(user)
                     await response.send(toSend.group(1))
-            responder =  client.get_user(341767947309678603)
-            if message.author.id != 341767947309678603:
+            responder =  client.get_user(ownerID)
+            if message.author.id != ownerID:
                 await responder.send(str(message.author.id)+' : '+ message.author.name + ' sent the following:' + '\n' + message.content )
             return       
         channel = message.channel
         
         guild = str(message.guild.id)
-        authorizedUsers = ['341767947309678603', '831180756562608159']
         
-        if 'vent' in channel.name.lower(): #Will not reply to any message if the channel has vent in it
-            return
+        
         if int(channel.id) == 1119454395151695992:
             return
         if testing:
@@ -95,43 +99,48 @@ class MyClient(discord.Client):
 
                 
         #Whole premise of the bot
-        if 'creeper' in m:
-            guild = str(message.guild.id)
-            uid = str(authID)
-            creepers = m.count('creeper')
-            chance = random.randint(1, 100)
-            guildNameFormatted = message.guild.name.encode('ASCII', 'ignore').decode()
-            stat = stats.updateStat(guild, uid, creepers)
-            #if too big it wont count
-            if creepers > 285:
-               await message.reply('wont count, too big', file=discord.File('explode.mp4'))
-               return
-            if chance != 2:
-               #Random chance creeper
-                await message.reply(f'aw man\n'*int(creepers))
-                print("Replied to", message.author.name, f"They've done this {stat} times in", guildNameFormatted)
-            else:
-                rareMessage = random.choice(lM.rareResponses)
-                await message.reply(rareMessage)
-                print("Replied to", message.author.name, f"They've done this {stat} times in {guildNameFormatted} and they got a rare message!")
-                stats.updateStat(guild, uid, int(creepers)*3)
-            role = discord.utils.get(message.guild.roles, name='CreeperNotifs')
-            try:
-                if role not in message.author.roles:
-                    await message.reply('You have accepted these terms, there isn\'t a way out anymore')
-                    await message.author.add_roles(role)
-                    print(f'Gave role to {message.author}')
-            except AttributeError:
-                print(f'{guildNameFormatted} does not have role CreeperNotifs, Role was not given to {message.author}')
+        if message.author.id not in blacklist:
+            if 'creeper' in m:
+                guild = str(message.guild.id)
+                uid = str(authID)
+                creepers = m.count('creeper')
+                chance = random.randint(1, 100)
+                guildNameFormatted = message.guild.name.encode('ASCII', 'ignore').decode()
+                stat = stats.updateStat(guild, uid, creepers)
+                #if too big it wont count
+                if creepers > 284:
+                   await message.reply('wont count, too big', file=discord.File('explode.mp4'))
+                   return
+                if chance != 2:
+                   #Random chance creeper
+                    await message.reply(f'aw man\n'*int(creepers))
+                    print("Replied to", message.author.name, f"They've done this {stat} times in", guildNameFormatted)
+                else:
+                    rareMessage = random.choice(lM.rareResponses)
+                    await message.reply(rareMessage)
+                    print("Replied to", message.author.name, f"They've done this {stat} times in {guildNameFormatted} and they got a rare message!")
+                    stats.updateStat(guild, uid, int(creepers)*3)
+                role = discord.utils.get(message.guild.roles, name='CreeperNotifs')
                 try:
-                    await message.guild.create_role(name='CreeperNotifs', color = discord.Color.green())
-                    print (f'Created CreeperNotifs in {guildNameFormatted}')
+                    if role not in message.author.roles:
+                        await message.reply('You have accepted these terms, there isn\'t a way out anymore')
+                        await message.author.add_roles(role)
+                        print(f'Gave role to {message.author}')
+                except AttributeError:
+                    print(f'{guildNameFormatted} does not have role CreeperNotifs, Role was not given to {message.author}')
+                    try:
+                        await message.guild.create_role(name='CreeperNotifs', color = discord.Color.green())
+                        print (f'Created CreeperNotifs in {guildNameFormatted}')
+                    except Exception as e: print(e)
+                except discord.errors.Forbidden:
+                    print(f'Forbidden to give role to {message.author}')
                 except Exception as e: print(e)
-            except discord.errors.Forbidden:
-                print(f'Forbidden to give role to {message.author}')
-            except Exception as e: print(e)        
-            
-            
+        else: 
+            await message.author.send('You have been blacklisted from creeper')
+            return        
+        authorizedUsers = config['IDS']['authorizedUsers']  
+        authorizedUsers = data.extractID(authorizedUsers) 
+        
         if '!stats' in m:                   #Statistics
             if m == '!stats all':
                 allStats = stats.getAllStats(guild)
@@ -154,7 +163,7 @@ class MyClient(discord.Client):
                         await message.reply('Mention a user shitass')
                         return
                     for uids in message.mentions:
-                        if uids.id == '341767947309678603':
+                        if uids.id == f'{ownerID}':
                             await message.reply('Nah fuck you')
                         else:
                             stats.resetStat(guild, str(uids.id))

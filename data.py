@@ -58,5 +58,15 @@ async def backup(client, channelID):
             backup.cancel()
     else:
         print('Backup Failed\nNo stats file')
+        
+def extractID(string):
+    integers = []
+    split_string = string.split(',')
+    for num in split_string:
+        num = num.strip()
+        if num.isdigit():
+            integers.append(int(num))
+    return integers
+
 
                 
