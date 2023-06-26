@@ -32,8 +32,12 @@ rareResponses = [
 '\*Cums and dies*',
 ]
 
-
-presence = {
-    'watching': watching,
-    'playing': playing  
-}
+def status(type):
+    type = type.lower()
+    if type == 'watching':
+    #Chooses from watching List
+       return random.choice(watching)
+    elif type == 'playing':
+    #Chooses from playing List
+       return random.choice(playing)
+    
