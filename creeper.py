@@ -102,11 +102,11 @@ class MyClient(discord.Client):
                 creepers = m.count('creeper')
                 chance = random.randint(1, 100)
                 guildNameFormatted = message.guild.name.encode('ASCII', 'ignore').decode()
-                stat = stats.updateStat(guild, uid, creepers)
                 #if too big it wont count
                 if creepers >= 284:
                    await message.reply('wont count, too big', file=discord.File('explode.mp4'))
                    return
+                stat = stats.updateStat(guild, uid, creepers)
                 if chance != 2:
                    #Random chance creeper
                     await message.reply(f'aw man\n'*int(creepers))
