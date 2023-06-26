@@ -64,16 +64,14 @@ class MyClient(discord.Client):
         
     @client.event
     async def on_message(self, message):
-        channel = message.channel
-        if 'vent' in channel.name.lower(): #Will not reply to any message if the channel has vent in it
-            return
+        
         if random.randint(1, 10000) == 5:
                 await message.send('Never gonna give you up\nNever gonna let you down\nNever gonna run around and desert you\nNever gonna make you cry\nNever gonna say goodbye\nNever gonna tell a lie and hurt you')
         if message.author.id == (self.user.id or testid):   #Bot will not reply to itself, on top so nothing will mess with it
             return
         m = message.content.lower()
         authID = message.author.id
-        
+        channel = message.channel
         if isinstance(message.channel, discord.DMChannel):
             if message.author.id == ownerID:
                 ids = re.findall(r'(\d+)', message.content)
@@ -87,7 +85,9 @@ class MyClient(discord.Client):
             if message.author.id != ownerID:
                 await responder.send(str(message.author.id)+' : '+ message.author.name + ' sent the following:' + '\n' + message.content )
             return       
-
+        guild = str(message.guild.id)
+        if 'vent' in channel.name.lower(): #Will not reply to any message if the channel has vent in it
+            return
         if int(channel.id) == 1119454395151695992:
             return
         if testing:
