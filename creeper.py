@@ -47,9 +47,9 @@ class MyClient(discord.Client):
         await client.wait_until_ready()
         r = random.randint(0,1)
         if random.randint(0,1) == 0:
-            await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=lM.status('playing')))
+            await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=random.choice(lM.presence['playing'])))
         elif r == 1:    
-            await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=lM.status('watching')))
+            await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=random.choice(lM.presence['watching'])))
             
 
 
