@@ -10,7 +10,7 @@ def updateStat(guild,uid, value=1):
     uid = str(uid)
     json_data = load(guild)
     if uid not in json_data[guild]:
-        json_data[guild][uid] = 1
+        json_data[guild][uid] = value
         save(json_data)
         return json_data[guild][uid]
     else:

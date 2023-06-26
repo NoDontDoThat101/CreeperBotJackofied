@@ -52,12 +52,11 @@ class MyClient(discord.Client):
             await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=lM.status('watching')))
             
 
-    
+
     @client.event
     async def on_ready(self):
         print('Logged on as', self.user, 'on discord version', discord.__version__)
-        firstStatus = random.choice(['playing','watching'])
-        await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=lM.status(firstStatus)))
+        await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=lM.status('playing')))
         client.status_change.start()
         if data.checkConfig(config['DATA']['backup']) and not testing:
             data.backup.start(self, backupChannel)
@@ -66,7 +65,6 @@ class MyClient(discord.Client):
     @client.event
     async def on_message(self, message):
         channel = message.channel
-        guild = str(message.guild.id)
         if 'vent' in channel.name.lower(): #Will not reply to any message if the channel has vent in it
             return
         if random.randint(1, 10000) == 5:
@@ -75,11 +73,12 @@ class MyClient(discord.Client):
             return
         m = message.content.lower()
         authID = message.author.id
+        
         if isinstance(message.channel, discord.DMChannel):
             if message.author.id == ownerID:
                 ids = re.findall(r'(\d+)', message.content)
                 for each in range(0, len(ids)):
-                    ids[each]=int(ids[each])
+                    ids[each]=int(ids[each]) 
                 for user in ids:
                     toSend= re.search(r'\n(.+)', message.content)
                     response = client.get_user(user)
@@ -88,18 +87,13 @@ class MyClient(discord.Client):
             if message.author.id != ownerID:
                 await responder.send(str(message.author.id)+' : '+ message.author.name + ' sent the following:' + '\n' + message.content )
             return       
-        
-        
-        
-        
-        
+
         if int(channel.id) == 1119454395151695992:
             return
         if testing:
             if m == 'ping':                    #Test message to ensure its reciving
                 await message.reply('pong')
 
-                
         #Whole premise of the bot
         if message.author.id not in blacklist:
             if 'creeper' in m:
@@ -110,7 +104,7 @@ class MyClient(discord.Client):
                 guildNameFormatted = message.guild.name.encode('ASCII', 'ignore').decode()
                 stat = stats.updateStat(guild, uid, creepers)
                 #if too big it wont count
-                if creepers > 284:
+                if creepers >= 284:
                    await message.reply('wont count, too big', file=discord.File('explode.mp4'))
                    return
                 if chance != 2:
@@ -207,6 +201,7 @@ class MyClient(discord.Client):
     @client.event
     async def on_member_update(self, before, after):
         guild = client.get_guild(before.guild.id)
+        #Makes it so the a user cannot remove the CreeperNotifs role from a user or themselves 
         role = discord.utils.get(guild.roles, name='CreeperNotifs')
         if before.roles != after.roles:
             if role in before.roles:
