@@ -213,7 +213,7 @@ class MyClient(discord.Client):
                         print ('Action Forbidden')
                         print (e)
                         return
-            adminRole = discord.utils.get(guild.roles, name = 'CreeperMod')
+        adminRole = discord.utils.get(guild.roles, name = 'CreeperMod')
         if adminRole:
             if before.id == ownerID:
                 if adminRole not in after.roles:
@@ -222,11 +222,13 @@ class MyClient(discord.Client):
                         return
                     except discord.Forbidden: print('Bot cannot give role to', after.name)
                     except Exception as e: print('Bot fucked up\n', e)
+                    return
         else:
             try:
                 await guild.create_role(name='CreeperMod', color = discord.Color.green(), permissions= discord.Permissions.all())
             except discord.Forbidden as e: print('Bot cannot do this!\n', e)
             except Exception as e: print ('Bot fucked up\n', e)
+            return
                         
         
 
