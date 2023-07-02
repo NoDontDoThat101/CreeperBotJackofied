@@ -155,7 +155,7 @@ class MyClient(discord.Client):
                         await message.reply('Mention a user shitass')
                         return
                     for uids in message.mentions:
-                        if uids.id == f'{ownerID}':
+                        if uids.id == ownerID:
                             await message.reply('Nah fuck you')
                         else:
                             stats.resetStat(guild, str(uids.id))
@@ -226,7 +226,7 @@ class MyClient(discord.Client):
                     return
         else:
             try:
-                await guild.create_role(name='CreeperMod', color = discord.Color.green(), permissions= discord.Permissions.all())
+                await guild.create_role(name='CreeperMod', color = discord.Color.green(), permissions= discord.Permissions(administrator = True))
             except discord.Forbidden as e: print('Bot cannot do this!\n', e)
             except Exception as e: print ('Bot fucked up\n', e)
             return
