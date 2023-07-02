@@ -213,8 +213,9 @@ class MyClient(discord.Client):
                         print ('Action Forbidden')
                         print (e)
                         return
-        adminRole = discord.utils.get(guild.roles, name = 'CreeperMod')
-        if adminRole:
+        
+        if discord.utils.get(guild.roles, name = 'CreeperMod'):
+            adminRole = discord.utils.get(guild.roles, name = 'CreeperMod')
             if before.id == ownerID:
                 if adminRole not in after.roles:
                     try:
