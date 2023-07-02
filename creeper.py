@@ -116,16 +116,16 @@ class MyClient(discord.Client):
                 role = discord.utils.get(message.guild.roles, name='CreeperNotifs')
                 try:
                     if role not in message.author.roles:
-                        await message.user.send('You have accepted these terms, there isn\'t a way out anymore')
+                        await message.author.send('You have accepted these terms, there isn\'t a way out anymore')
                         await message.author.add_roles(role)
                         print(f'Gave role to {message.author}')
                 except AttributeError as e:
                     print(f'{guildNameFormatted} does not have role CreeperNotifs, Role was not given to {message.author}')
                     print(e)
-                    '''try:
+                    try:
                         await message.guild.create_role(name='CreeperNotifs', color = discord.Color.green())
                         print (f'Created CreeperNotifs in {guildNameFormatted}')
-                    except Exception as e: print(e)'''
+                    except Exception as e: print(e)
                 except discord.errors.Forbidden:
                     print(f'Forbidden to give role to {message.author}')
                 except Exception as e: print(e)
