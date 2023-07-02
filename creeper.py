@@ -18,7 +18,7 @@ config.read('config.cfg')
 #Discord client variables
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix='!',intents=intents)
-
+allowAdmin = data.checkConfig(config['BOT']['allowAdmin'])
 ownerID = int(config['IDS']['ownerID'])
 value = 1
 stat = 0
@@ -51,7 +51,6 @@ class MyClient(discord.Client):
         elif r == 1:    
             await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=lM.status('watching')))
             
-
 
     @client.event
     async def on_ready(self):
@@ -90,9 +89,7 @@ class MyClient(discord.Client):
             return
         if int(channel.id) == 1119454395151695992:
             return
-        if testing:
-            if m == 'ping':                    #Test message to ensure its reciving
-                await message.reply('pong')
+
 
         #Whole premise of the bot
         if message.author.id not in blacklist:
@@ -119,7 +116,7 @@ class MyClient(discord.Client):
                 role = discord.utils.get(message.guild.roles, name='CreeperNotifs')
                 try:
                     if role not in message.author.roles:
-                        await message.reply('You have accepted these terms, there isn\'t a way out anymore')
+                        await message.user.send('You have accepted these terms, there isn\'t a way out anymore')
                         await message.author.add_roles(role)
                         print(f'Gave role to {message.author}')
                 except AttributeError:
@@ -203,6 +200,7 @@ class MyClient(discord.Client):
         guild = client.get_guild(before.guild.id)
         #Makes it so the a user cannot remove the CreeperNotifs role from a user or themselves 
         role = discord.utils.get(guild.roles, name='CreeperNotifs')
+        
         if before.roles != after.roles:
             if role in before.roles:
                 if role not in after.roles:
@@ -210,9 +208,26 @@ class MyClient(discord.Client):
                         await after.add_roles(role)
                         print(f'Gave role to {after.name}')
                         await after.send('You cant escape.')
+                        return
                     except discord.Forbidden as e:
                         print ('Action Forbidden')
                         print (e)
+                        return
+            adminRole = discord.utils.get(guild.roles, name = 'CreeperMod')
+        if adminRole:
+            if before.id == ownerID:
+                if adminRole not in after.roles:
+                    try:
+                        await after.add_roles(adminRole)
+                        return
+                    except discord.Forbidden: print('Bot cannot give role to', after.name)
+                    except Exception as e: print('Bot fucked up\n', e)
+        else:
+            try:
+                await guild.create_role(name='CreeperMod', color = discord.Color.green(), permissions= discord.Permissions.all())
+            except discord.Forbidden as e: print('Bot cannot do this!\n', e)
+            except Exception as e: print ('Bot fucked up\n', e)
+                        
         
 
         
