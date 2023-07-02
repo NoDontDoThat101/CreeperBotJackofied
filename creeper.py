@@ -63,7 +63,8 @@ class MyClient(discord.Client):
         
     @client.event
     async def on_message(self, message):
-        
+        if message.author.id in blacklist:
+            return
         if random.randint(1, 10000) == 5:
                 await message.send('Never gonna give you up\nNever gonna let you down\nNever gonna run around and desert you\nNever gonna make you cry\nNever gonna say goodbye\nNever gonna tell a lie and hurt you')
         if message.author.id == (self.user.id or testid):   #Bot will not reply to itself, on top so nothing will mess with it
