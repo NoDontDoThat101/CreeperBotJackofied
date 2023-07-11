@@ -12,6 +12,7 @@ import configparser
 import re
 
 
+
 config = configparser.ConfigParser()
 config.read('config.cfg')
 
@@ -93,45 +94,43 @@ class MyClient(discord.Client):
 
 
         #Whole premise of the bot
-        if message.author.id not in blacklist:
-            if 'creeper' in m:
-                guild = str(message.guild.id)
-                uid = str(authID)
-                creepers = m.count('creeper')
-                chance = random.randint(1, 100)
-                guildNameFormatted = message.guild.name.encode('ASCII', 'ignore').decode()
-                #if too big it wont count
-                if creepers >= 284:
-                   await message.reply('wont count, too big', file=discord.File('explode.mp4'))
-                   return
-                stat = stats.updateStat(guild, uid, creepers)
-                if chance != 2:
-                   #Random chance creeper
-                    await message.reply(f'aw man\n'*int(creepers))
-                    print("Replied to", message.author.name, f"They've done this {stat} times in", guildNameFormatted)
-                else:
-                    rareMessage = random.choice(lM.rareResponses)
-                    await message.reply(rareMessage)
-                    print("Replied to", message.author.name, f"They've done this {stat} times in {guildNameFormatted} and they got a rare message!")
-                    stats.updateStat(guild, uid, int(creepers)*3)
-                role = discord.utils.get(message.guild.roles, name='CreeperNotifs')
+        if 'creeper' in m:
+            guild = str(message.guild.id)
+            uid = str(authID)
+            creepers = m.count('creeper')
+            chance = random.randint(1, 100)
+            guildNameFormatted = message.guild.name.encode('ASCII', 'ignore').decode()
+            #if too big it wont count
+            if creepers >= 284:
+               await message.reply('wont count, too big', file=discord.File('explode.mp4'))
+               return
+            stat = stats.updateStat(guild, uid, creepers)
+            if chance != 2:
+               #Random chance creeper
+                await message.reply(f'aw man\n'*int(creepers))
+                print("Replied to", message.author.name, f"They've done this {stat} times in", guildNameFormatted)
+            else:
+                rareMessage = random.choice(lM.rareResponses)
+                await message.reply(rareMessage)
+                print("Replied to", message.author.name, f"They've done this {stat} times in {guildNameFormatted} and they got a rare message!")
+                stats.updateStat(guild, uid, int(creepers)*3)
+            role = discord.utils.get(message.guild.roles, name='CreeperNotifs')
+            try:
+                if role not in message.author.roles:
+                    await message.author.send('You have accepted these terms, there isn\'t a way out anymore')
+                    await message.author.add_roles(role)
+                    print(f'Gave role to {message.author}')
+            except AttributeError as e:
+                print(f'{guildNameFormatted} does not have role CreeperNotifs, Role was not given to {message.author}')
+                print(e)
                 try:
-                    if role not in message.author.roles:
-                        await message.author.send('You have accepted these terms, there isn\'t a way out anymore')
-                        await message.author.add_roles(role)
-                        print(f'Gave role to {message.author}')
-                except AttributeError as e:
-                    print(f'{guildNameFormatted} does not have role CreeperNotifs, Role was not given to {message.author}')
-                    print(e)
-                    try:
-                        await message.guild.create_role(name='CreeperNotifs', color = discord.Color.green())
-                        print (f'Created CreeperNotifs in {guildNameFormatted}')
-                    except Exception as e: print(e)
-                except discord.errors.Forbidden:
-                    print(f'Forbidden to give role to {message.author}')
+                    await message.guild.create_role(name='CreeperNotifs', color = discord.Color.green())
+                    print (f'Created CreeperNotifs in {guildNameFormatted}')
                 except Exception as e: print(e)
-        else: 
-            return        
+            except discord.errors.Forbidden:
+                print(f'Forbidden to give role to {message.author}')
+            except Exception as e: print(e)
+      
         authorizedUsers = config['IDS']['authorizedUsers']  
         authorizedUsers = data.extractID(authorizedUsers) 
         
