@@ -7,9 +7,9 @@ playing = [
     "With your balls",
     "CBT 3: The Reckoning",
     "With myself",
-    
-    
-    
+    "In your yard with your dog"
+    "On your steam library, please don't kick me out"
+    "Creeper Simulator " + str(random.randint(69,420))
 ]
 watching = [
     "Your Status",
@@ -19,6 +19,8 @@ watching = [
     "How To Psycologically Torture Your Friends: Part " + str(random.randint(1,100000)),
     'Your messages',
     'Porn with your mother',
+    "The cosmos grow endlessly"
+    "The individual neurons in your brain that just made that stupid choice"
 ]
 
 rareResponses = [
@@ -30,8 +32,11 @@ rareResponses = [
 "Please for the love of god, just stop",
 'You know what, this time im really gonna do it',
 '\*Cums and dies*',
-]
-
+"Why are you doing this to me. Please stop",
+"That face... looks like the face of someone that said creeper too much- and saw the consequences"
+"Ask yourself. Are you okay? Should you be meditating right now? You should be meditating right now, John. What do you mean that's not your name? Of course it is!"
+"Can't spell \'being alive\' without AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+] 
 def status(type):
     type = type.lower()
     if type == 'watching':
