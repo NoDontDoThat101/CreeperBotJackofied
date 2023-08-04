@@ -130,6 +130,27 @@ class MyClient(discord.Client):
             except discord.errors.Forbidden:
                 print(f'Forbidden to give role to {message.author}')
             except Exception as e: print(e)
+
+#Duplicated code for 'caulk'. Doesn't increment any counters and doesn't care for roles, replies with 'and wall torture' instead of 'aw man'
+        if 'caulk' in m:
+            guild = str(message.guild.id)
+            uid = str(authID)
+            caulkCount = m.count('caulk')
+            chance = random.randint(1, 100)
+            guildNameFormatted = message.guild.name.encode('ASCII', 'ignore').decode()
+            #if too big it wont count
+            if caulkCount >= 284:
+               await message.reply('nice caulk. too bad it\'s too big')
+               return
+            if chance != 2:
+               #Normal reply
+                await message.reply(f'aw man\n'*int(caulkCount))
+                print("Replied to", message.author.name, f"They've done this {stat} times in", guildNameFormatted)
+            else:
+               #Rare reply
+                rareMessage = random.choice(lM.rareResponses)
+                await message.reply(rareMessage)
+                print("Replied to", message.author.name, f"They've done this {stat} times in {guildNameFormatted} and they got a rare message!")
       
         authorizedUsers = config['IDS']['authorizedUsers']  
         authorizedUsers = data.extractID(authorizedUsers) 
@@ -157,13 +178,13 @@ class MyClient(discord.Client):
                         return
                     for uids in message.mentions:
                         if uids.id == ownerID:
-                            await message.reply('Nah fuck you')
+                            await message.reply('Nah fuck you') #HAH! Nice.
                         else:
                             stats.resetStat(guild, str(uids.id))
                             await message.reply(f'Stats for <@{uids.id}> have been reset')
                     return
                 else: 
-                    await message.reply('You do not have permission to do this, ping Void because he\'s the only one with permission')
+                    await message.reply('You do not have permission to do this, ping Void because he\'s the only one with permission. No, I did not give myself permission to do this, because yes, I\'m too fucking lazy. Piss off')
                     return
             if m == '!stats reset all':
                 await message.reply('Confirm in console')
