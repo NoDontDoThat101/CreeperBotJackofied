@@ -9,14 +9,14 @@ playing = [
     "With myself",
     "In your yard with your dog"
     "On your steam library, please don't kick me out"
-    "Creeper Simulator " + str(random.randint(69,420))
+    f"Creeper Simulator {str(random.randint(69,420))}"
 ]
 watching = [
     "Your Status",
     'You',
     'Through your window',
     "Gay Furry Porn",
-    "How To Psycologically Torture Your Friends: Part " + str(random.randint(1,100000)),
+    f"How To Psycologically Torture Your Friends: Part {str(random.randint(1,100000))}",
     'Your messages',
     'Porn with your mother',
     "The cosmos grow endlessly"
